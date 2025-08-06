@@ -1,0 +1,57 @@
+const locales = {
+    GO_TO_STATES: "الذهاب إلى صفحة المحافطات",
+    NO_STATE: "المحافظة غير موجود!",
+    STATE_DETAILS: "تفاصيل المحافظة",
+    CREATED_AT: "تاريخ الإنشاء",
+    REMOVE_STATE_TITLE: "حذف المحافظة",
+    REMOVE_STATE_MESSAGE: "هل أنت متأكد من حذف المحافظة?",
+    STATE_CREATED_SUCCESSFULLY: "تم إنشاء المحافظة بنجاح",
+    STATE_SAVED_SUCCESSFULLY: "تم حفظ المحافظة بنجاح",
+    STATE_REMOVED_SUCCESSFULLY: "تم حذف المحافظة بنجاح",
+    SOMETHING_WENT_WRONG_WHEN_CREATE_STATE: "حدث خطأ عند إنشاء المحافظة!",
+    SOMETHING_WENT_WRONG_WHEN_SAVE_STATE: "حدث خطأ عند حفظ المحافظة!",
+    SOMETHING_WENT_WRONG_WHEN_REMOVE_STATE: "حدث خطأ عند حذف المحافظة!",
+    ACTIONS: "العمليات",
+    VIEW: "عرض",
+    REMOVE: "حذف",
+    REMOVE_STATE: "حذف المحافظة",
+    SAVE_STATE: "حفظ المحافظة",
+    CREATE_STATE: "إنشاء المحافظة",
+    STATES: "المحافطات",
+    ADD_STATE: "إضافة المحافظة",
+    UPLOAD_STATE_IMAGE: "رفع صورة المحافظة",
+    UPLOADED: "تم الرفع",
+    SOMETHING_WENT_WRONG_WHEN_CREATE_STATE_IMAGE:
+      "حدث خطأ عند إنشاء صورة المحافظة!",
+    SOMETHING_WENT_WRONG_WHEN_UPLOAD_STATE_IMAGE: "حدث خطأ عند رفع صورة المحافظة",
+    REQUIRED_FIELD: "هذا الحقل مطلوب",
+    MORE_THAN_0: "يجب أن يكون اكبر من 0",
+    STATE: "المحافظة",
+    SEARCH_STATES: "البحث في المحافطات",
+    CANCEL: "الغاء",
+    DOWNLOAD: "طباعة",
+    DOWNLOADING: "جاري الطباعة..",
+    ALL: "الكل",
+    START_DATE: "تاريخ البداية",
+    END_DATE: "تاريخ الإنتهاء",
+    BASIC_INFO: "المعلومات الأساسية",
+    MAIN_INFORMATION: "المعلومات الرئيسية",
+  
+    NAME: "الاسم",
+    STATUS: "الحالة",
+    ACTIVE: "فعالة",
+    INACTIVE: "غير فعالة",
+    ACTIVATE: "تفعيل",
+    DEACTIVATE: "الغاء التفعيل",
+    ACTIVATE_AFTER_CREATE: "تفعيل المحافظة مباشرة بعد الإنشاء",
+    STATE_ACTIVATED_SUCCESSFULLY: "تم تفعيل المحافظة بنجاح",
+    SOMETHING_WENT_WRONG_WHEN_ACTIVATE_STATE: "حدث خطأ عند تفعيل المحافظة!",
+    STATE_DEACTIVATED_SUCCESSFULLY: "تم الغاء تفعيل المحافظة بنجاح",
+    SOMETHING_WENT_WRONG_WHEN_DEACTIVATE_STATE:
+      "حدث خطأ عند الغاء تفعيل المحافظة!",
+    
+    
+  };
+  
+  export default locales;
+  
