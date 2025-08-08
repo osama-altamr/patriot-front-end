@@ -4,6 +4,7 @@ export const employeeAccessType = {
 	employee: 'employee',
 	driver: 'driver'
 };
+
 export const employeeScopes = {
 	products: 'products',
 	categories: 'categories',
@@ -15,9 +16,11 @@ export const employeeScopes = {
 	reports: 'reports',
 	users: 'users',
 	states: 'states',
-	cities: 'cities'
+	cities: 'cities',
+	operations: 'operations'
 };
 
+// --- Helper for Titles ---
 export const toEmployeeAccessTypeTitle = (accessType) => {
 	switch (accessType) {
 		case employeeAccessType.owner:
@@ -28,11 +31,13 @@ export const toEmployeeAccessTypeTitle = (accessType) => {
 			return 'EMPLOYEE';
 		case employeeAccessType.driver:
 			return 'DRIVER';
+		default:
+			return accessType.toUpperCase();
 	}
-	return 'OWNER';
 };
-export const toEmployeeScopesTitle = (scopes) => {
-	switch (scopes) {
+
+export const toEmployeeScopesTitle = (scope) => {
+	switch (scope) {
 		case employeeScopes.products:
 			return 'PRODUCTS';
 		case employeeScopes.categories:
@@ -55,46 +60,62 @@ export const toEmployeeScopesTitle = (scopes) => {
 			return 'STATES';
 		case employeeScopes.cities:
 			return 'CITIES';
+		case employeeScopes.operations:
+			return 'OPERATIONS';
+		default:
+			return scope.toUpperCase();
 	}
-	return 'PRODUCTS';
 };
+
+// --- NEW: Helper for Icons ---
+export const toEmployeeScopeIcon = (scope) => {
+	switch (scope) {
+		case employeeScopes.products:
+			return 'fa-shirt';
+		case employeeScopes.categories:
+			return 'fa-shapes';
+		case employeeScopes.orders:
+			return 'fa-file-invoice-dollar';
+		case employeeScopes.complaints:
+			return 'fa-comment-dots';
+		case employeeScopes.materials:
+			return 'fa-layer-group';
+		case employeeScopes.permissions:
+			return 'fa-user-shield';
+		case employeeScopes.stages:
+			return 'fa-list-check';
+		case employeeScopes.reports:
+			return 'fa-chart-pie';
+		case employeeScopes.users:
+			return 'fa-users';
+		case employeeScopes.states:
+			return 'fa-map-location-dot';
+		case employeeScopes.cities:
+			return 'fa-city';
+		case employeeScopes.operations:
+			return 'fa-city';
+		default:
+			return 'fa-check'; // Default icon
+	}
+};
+
+// --- Color Helpers (can be expanded later) ---
 export const toEmployeeAccessTypeColor = (accessType) => {
 	switch (accessType) {
 		case employeeAccessType.owner:
-			return 'bg-blue-500';
+			return 'bg-red-500';
 		case employeeAccessType.admin:
-			return 'bg-blue-500';
+			return 'bg-purple-500';
 		case employeeAccessType.employee:
 			return 'bg-blue-500';
 		case employeeAccessType.driver:
-			return 'bg-blue-500';
+			return 'bg-green-500';
+		default:
+			return 'bg-gray-500';
 	}
-	return 'bg-blue-500';
 };
+
 export const toEmployeeScopesColor = (scopes) => {
-	switch (scopes) {
-		case employeeScopes.products:
-			return 'bg-blue-500';
-		case employeeScopes.categories:
-			return 'bg-blue-500';
-		case employeeScopes.orders:
-			return 'bg-blue-500';
-		case employeeScopes.complaints:
-			return 'bg-blue-500';
-		case employeeScopes.materials:
-			return 'bg-blue-500';
-		case employeeScopes.permissions:
-			return 'bg-blue-500';
-		case employeeScopes.stages:
-			return 'bg-blue-500';
-		case employeeScopes.reports:
-			return 'bg-blue-500';
-		case employeeScopes.users:
-			return 'bg-blue-500';
-		case employeeScopes.states:
-			return 'bg-blue-500';
-		case employeeScopes.cities:
-			return 'bg-blue-500';
-	}
+	// This can be more detailed if needed
 	return 'bg-blue-500';
 };

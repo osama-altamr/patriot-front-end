@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 import { motion } from "framer-motion";
 import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import NavLinkAdapter from "@fuse/core/NavLinkAdapter";
-import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
 import { useTranslation } from "react-i18next";
 import { Input, Paper } from "@mui/material";
 import { useDispatch } from "react-redux";
@@ -17,36 +16,25 @@ import {
   setReportsDateToFilter,
   setReportsSearchText,
   reportsInitialState,
-  
   selectReportsTypeFilter,
   setReportsTypeFilter,
 } from "../store/reportsSlice";
 import FilterIcon from "app/shared-components/filter-icon/FilterIcon";
 import { FilterTypes } from "app/shared-components/filter-icon/Utils";
 import _ from "lodash";
-import localeString from "src/app/main/utils/localeString";
-import { useAppSelector } from "app/store/hooks";
-import { selectUser } from "src/app/auth/user/store/userSlice";
-import {reportType,
-toReportTypeTitle,
-toReportTypeColor,} from "../Utils";
+import { reportType, toReportTypeTitle } from "../Utils";
 
 /**
  * The Reports header.
  */
-
 function ReportsHeader() {
   const { t } = useTranslation("reportsApp");
   const dispatch = useDispatch<AppDispatch>();
-  const user = useAppSelector(selectUser);
-  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const searchText = useSelector(selectReportsSearchText);
-  
   const typeFilter = useSelector(selectReportsTypeFilter);
   const dateFromFilter = useSelector(selectReportsDateFromFilter);
   const dateToFilter = useSelector(selectReportsDateToFilter);
-  
-  
+
   function handleChangeTypeFilter(event) {
     dispatch(setReportsTypeFilter(event));
   }
@@ -75,21 +63,20 @@ function ReportsHeader() {
         >
           <FilterIcon
             filters={[
-              
               {
-    type: FilterTypes.dropdown,
-title: t("TYPE"),
-value: typeFilter,
-onChange: handleChangeTypeFilter,
-items: [
+                type: FilterTypes.dropdown,
+                title: t("TYPE"),
+                value: typeFilter,
+                onChange: handleChangeTypeFilter,
+                items: [
                   { label: t("ALL"), value: "all" },
                   ...Object.values(reportType).map((i) => ({
                     label: t(toReportTypeTitle(i)),
                     value: i,
                   })),
                 ],
-closeOnChange: false,
-  },
+                closeOnChange: false,
+              },
               {
                 type: FilterTypes.dateTime,
                 title: t("START_DATE"),
@@ -111,7 +98,7 @@ closeOnChange: false,
             ]}
             changesCount={
               [
-                
+                !_.isEqual(typeFilter, reportsInitialState.typeFilter),
                 !_.isEqual(dateFromFilter, reportsInitialState.dateFromFilter),
                 !_.isEqual(dateToFilter, reportsInitialState.dateToFilter),
               ].filter(Boolean).length
@@ -131,16 +118,13 @@ closeOnChange: false,
             style={{ borderRadius: 8 }}
           >
             <FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
-
             <Input
               placeholder={t("SEARCH_REPORTS")}
               className="flex flex-1"
               disableUnderline
               fullWidth
               value={searchText}
-              inputProps={{
-                "aria-label": "Search",
-              }}
+              inputProps={{ "aria-label": "Search" }}
               onChange={(ev) => {
                 dispatch(setReportsSearchText(ev));
               }}
@@ -148,22 +132,20 @@ closeOnChange: false,
           </Paper>
         </motion.div>
         <motion.div
-            className="flex flex-grow-0"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+          className="flex flex-grow-0"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+        >
+          <Button
+            variant="contained"
+            color="secondary"
+            component={NavLinkAdapter}
+            to={`/reports/new`}
+            startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>}
           >
-            <Button
-              variant="contained"
-              color="secondary"
-              component={NavLinkAdapter}
-              to={`/reports/new`}
-              startIcon={
-                <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-              }
-            >
-              {t(`ADD_REPORT`)}
-            </Button>
-          </motion.div>
+            {t(`ADD_REPORT`)}
+          </Button>
+        </motion.div>
       </div>
     </div>
   );

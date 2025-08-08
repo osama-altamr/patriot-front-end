@@ -18,10 +18,10 @@ const ProductApi = api
           if (filters.searchText) {
             url += `&search=${filters.searchText}`;
           }
-
+          
           if (filters.categoryIdFilter) {
-            url += `&categoryId=${filters.categoryIdFilter}`;
-          }
+      url += `&categoryId=${filters.categoryIdFilter}`;
+    }
           if (filters.dateFromFilter) {
             url += `&dateFrom=${filters.dateFromFilter}`;
           }
@@ -32,44 +32,41 @@ const ProductApi = api
         },
         providesTags: ["Products"],
       }),
-      removeProduct: build.mutation<
-        RemoveProductApiResponse,
-        RemoveProductApiArg
-      >({
-        query: (productId) => ({
-          url: `v1/products/${productId}`,
-          method: "DELETE",
-        }),
-        invalidatesTags: ["Products", "Product"],
-      }),
+      removeProduct: build.mutation<RemoveProductApiResponse, RemoveProductApiArg>(
+        {
+          query: (productId) => ({
+            url: `v1/products/${productId}`,
+            method: "DELETE",
+          }),
+          invalidatesTags: ["Products", "Product"],
+        }
+      ),
       getProduct: build.query<GetProductApiResponse, GetProductApiArg>({
         query: (productId) => ({
           url: `v1/products/${productId}`,
         }),
         providesTags: ["Products", "Product"],
       }),
-      updateProduct: build.mutation<
-        UpdateProductApiResponse,
-        UpdateProductApiArg
-      >({
-        query: (product) => ({
-          url: `products/${product.id}`,
-          method: "PATCH",
-          data: _.pick(product, ...productEditableFields),
-        }),
-        invalidatesTags: ["Products", "Product"],
-      }),
-      createProduct: build.mutation<
-        CreateProductApiResponse,
-        CreateProductApiArg
-      >({
-        query: (newProduct) => ({
-          url: `v1/products`,
-          method: "POST",
-          data: ProductModel(newProduct),
-        }),
-        invalidatesTags: ["Products", "Product"],
-      }),
+      updateProduct: build.mutation<UpdateProductApiResponse, UpdateProductApiArg>(
+        {
+          query: (product) => ({
+            url: `v1/products/${product.id}`,
+            method: "PATCH",
+            data: _.pick(product, ...productEditableFields),
+          }),
+          invalidatesTags: ["Products", "Product"],
+        }
+      ),
+      createProduct: build.mutation<CreateProductApiResponse, CreateProductApiArg>(
+        {
+          query: (newProduct) => ({
+            url: `v1/products`,
+            method: "POST",
+            data: ProductModel(newProduct),
+          }),
+          invalidatesTags: ["Products", "Product"],
+        }
+      ),
     }),
     overrideExisting: false,
   });
@@ -86,8 +83,8 @@ export type GetProductsApiArg = {
   page: number;
   pageSize: number;
   searchText?: string;
-
-  categoryIdFilter?: string;
+  
+  categoryIdFilter?: string,
   dateFromFilter?: string;
   dateToFilter?: string;
 };

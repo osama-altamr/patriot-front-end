@@ -21,22 +21,18 @@ import { LoadingButton } from "@mui/lab";
 import Icon from "app/shared-components/Icon";
 import IReport from "../models/IReport";
 import localeString from "src/app/main/utils/localeString";
-import { useAppSelector } from "app/store/hooks";
-import { selectUser } from "src/app/auth/user/store/userSlice";
+import { Button } from "@mui/material";
 
 /**
  * The report header.
  */
 function ReportHeader() {
   const dispatch = useDispatch<AppDispatch>();
-  const user = useAppSelector(selectUser);
   const routeParams = useParams();
   const { reportId } = routeParams;
   const { t } = useTranslation("reportsApp");
   const [loading, setLoading] = useState(false);
   const [loadingRemove, setLoadingRemove] = useState(false);
-  const [loadingActivate, setLoadingActivate] = useState(false);
-  const [loadingDeactivate, setLoadingDeactivate] = useState(false);
 
   const [updateReport] = useUpdateReportMutation();
   const [createReport] = useCreateReportMutation();
@@ -47,15 +43,18 @@ function ReportHeader() {
 
   const theme = useTheme();
   const navigate = useNavigate();
-  const { id, name, active } = watch();
+  const { id, name, xlsxUrl } = watch();
+
   function optimizeReport(data: IReport) {
     const reportData = { ...data };
     delete reportData.createdAt;
     delete reportData.updatedAt;
+    // ... any other fields to exclude from save/update
     return reportData;
   }
+
   function handleSaveReport() {
-    const onSubmit = (data: IReport) => {
+    const onSubmit = () => {
       setLoading(true);
       (id && id !== "new" ? updateReport : createReport)(
         optimizeReport(getValues())
@@ -63,32 +62,12 @@ function ReportHeader() {
         .unwrap()
         .then(() => {
           setLoading(false);
-          dispatch(
-            showMessage({
-              message: t(`REPORT_SAVED_SUCCESSFULLY`),
-              variant: "success",
-              autoHideDuration: 2000,
-              anchorOrigin: {
-                vertical: "top",
-                horizontal: "right",
-              },
-            })
-          );
+          dispatch(showMessage({ message: t(`REPORT_SAVED_SUCCESSFULLY`), variant: "success" }));
           navigate(`/reports`);
         })
-        .catch((e) => {
+        .catch(() => {
           setLoading(false);
-          dispatch(
-            showMessage({
-              message: t(`SOMETHING_WENT_WRONG_WHEN_SAVE_REPORT`),
-              variant: "error",
-              autoHideDuration: 2000,
-              anchorOrigin: {
-                vertical: "top",
-                horizontal: "right",
-              },
-            })
-          );
+          dispatch(showMessage({ message: t(`SOMETHING_WENT_WRONG_WHEN_SAVE_REPORT`), variant: "error" }));
         });
     };
     handleSubmit(onSubmit)();
@@ -105,34 +84,14 @@ function ReportHeader() {
               setLoadingRemove(true);
               removeReport(reportId)
                 .unwrap()
-                .then((action) => {
+                .then(() => {
                   setLoadingRemove(false);
-                  dispatch(
-                    showMessage({
-                      message: t(`REPORT_REMOVED_SUCCESSFULLY`),
-                      variant: "success",
-                      autoHideDuration: 2000,
-                      anchorOrigin: {
-                        vertical: "top",
-                        horizontal: "right",
-                      },
-                    })
-                  );
+                  dispatch(showMessage({ message: t(`REPORT_REMOVED_SUCCESSFULLY`), variant: "success" }));
                   navigate(`/reports`);
                 })
-                .catch((e) => {
+                .catch(() => {
                   setLoadingRemove(false);
-                  dispatch(
-                    showMessage({
-                      message: t(`SOMETHING_WENT_WRONG_WHEN_REMOVE_REPORT`),
-                      variant: "error",
-                      autoHideDuration: 2000,
-                      anchorOrigin: {
-                        vertical: "top",
-                        horizontal: "right",
-                      },
-                    })
-                  );
+                  dispatch(showMessage({ message: t(`SOMETHING_WENT_WRONG_WHEN_REMOVE_REPORT`), variant: "error" }));
                 });
             }}
           />
@@ -141,87 +100,52 @@ function ReportHeader() {
     );
   }
 
-  
-
   return (
     <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-24 sm:py-32 px-24 md:px-32">
       <div className="flex flex-col items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0">
-        <motion.div
-          initial={{ x: 20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}
-        >
-          <Typography
-            className="flex items-center sm:mb-12"
-            component={Link}
-            role="button"
-            to={`/reports`}
-            color="inherit"
-          >
-            <FuseSvgIcon size={20}>
-              {theme.direction === "ltr"
-                ? "heroicons-outline:arrow-sm-left"
-                : "heroicons-outline:arrow-sm-right"}
-            </FuseSvgIcon>
+        <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }} >
+          <Typography className="flex items-center sm:mb-12" component={Link} role="button" to={`/reports`} color="inherit" >
+            <FuseSvgIcon size={20}> {theme.direction === "ltr" ? "heroicons-outline:arrow-sm-left" : "heroicons-outline:arrow-sm-right"} </FuseSvgIcon>
             <span className="flex mx-4 font-medium">{t(`REPORTS`)}</span>
           </Typography>
         </motion.div>
 
         <div className="flex items-center max-w-full">
-          <motion.div
-            className="flex flex-col min-w-0 mx-8 sm:mx-16"
-            initial={{ x: -20 }}
-            animate={{ x: 0, transition: { delay: 0.3 } }}
-          >
-            <Typography className="text-16 sm:text-20 truncate font-semibold">
-              {t(`REPORT_DETAILS`)}
-            </Typography>
-            <Typography variant="caption" className="font-medium">
-              {name ? `${localeString(name) ?? ""}` : t(`REPORT`)}
-            </Typography>
+          <motion.div className="flex flex-col min-w-0 mx-8 sm:mx-16" initial={{ x: -20 }} animate={{ x: 0, transition: { delay: 0.3 } }} >
+            <Typography className="text-16 sm:text-20 truncate font-semibold"> {t(`REPORT_DETAILS`)} </Typography>
+            <Typography variant="caption" className="font-medium"> {name ? `${localeString(name) ?? ""}` : t(`REPORT`)} </Typography>
           </motion.div>
         </div>
       </div>
-      
-      {id &&
-        id !== "new" && (
-          <motion.div
-            className="flex flex-1 w-full"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
+
+      <motion.div className="flex items-center justify-end space-x-8" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }} >
+        {id && id !== "new" && xlsxUrl && (
+          <Button
+            className="whitespace-nowrap" variant="contained" color="success"
+            component="a" href={xlsxUrl} target="_blank" rel="noopener noreferrer"
+            startIcon={<Icon type="fa6" name="FaFileExcel" size="0.8em" />}
           >
-            <LoadingButton
-              className="whitespace-nowrap mx-4"
-              variant="contained"
-              color="error"
-              onClick={handleRemoveReport}
-              startIcon={<Icon type="fa6" name="FaRegTrashCan" size="0.8em" />}
-              loadingPosition="start"
-              loading={loadingRemove}
-            >
-              <span>{t(`REMOVE_REPORT`)}</span>
-            </LoadingButton>
-          </motion.div>
+            <span>{t(`DOWNLOAD_EXCEL`)}</span>
+          </Button>
         )}
-      <motion.div
-          className="flex flex-1 w-full"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
-        >
+        {id && id !== "new" && (
           <LoadingButton
-            className="whitespace-nowrap mx-4"
-            variant="contained"
-            color="secondary"
-            onClick={handleSaveReport}
-            startIcon={<Icon type="fa6" name="FaFloppyDisk" size="0.8em" />}
-            loadingPosition="start"
-            loading={loading}
-            disabled={
-              id && id !== "new" && (_.isEmpty(dirtyFields) || !isValid)
-            }
+            className="whitespace-nowrap" variant="contained" color="error" onClick={handleRemoveReport}
+            startIcon={<Icon type="fa6" name="FaRegTrashCan" size="0.8em" />}
+            loadingPosition="start" loading={loadingRemove}
           >
-            <span>{t(`${id && id !== "new" ? "SAVE" : "CREATE"}_REPORT`)}</span>
+            <span>{t(`REMOVE_REPORT`)}</span>
           </LoadingButton>
-        </motion.div>
+        )}
+        <LoadingButton
+          className="whitespace-nowrap" variant="contained" color="secondary" onClick={handleSaveReport}
+          startIcon={<Icon type="fa6" name="FaFloppyDisk" size="0.8em" />}
+          loadingPosition="start" loading={loading}
+          disabled={(id && id !== "new" && (_.isEmpty(dirtyFields) || !isValid)) || !isValid}
+        >
+          <span>{t(`${id && id !== "new" ? "SAVE" : "CREATE"}_REPORT`)}</span>
+        </LoadingButton>
+      </motion.div>
     </div>
   );
 }

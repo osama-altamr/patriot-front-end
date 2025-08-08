@@ -1,4 +1,6 @@
 const locale = {
+ORDERS: "الطلبات",
+PRODUCTS: "المنتجات",
 REPORTS: "التقارير",
 COMPLAINTS: "الشكاوي",
   ALL_USERS: "المستخدمين",

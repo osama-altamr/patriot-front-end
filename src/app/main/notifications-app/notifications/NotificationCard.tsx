@@ -7,7 +7,8 @@ import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
 import NavLinkAdapter from "@fuse/core/NavLinkAdapter";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { useTranslation } from "react-i18next";
-import INotification from "../models/INotification";
+// Import the new LocaleString type for type-safety
+import INotification, { LocaleString } from "../models/INotification";
 import { toNotificationTypeIcon } from "../Utils";
 
 function NotificationCard({
@@ -19,19 +20,26 @@ function NotificationCard({
   onClose?: (id: string) => void;
   className?: string;
 }) {
-  const { t } = useTranslation("notificationsApp");
-  const variant = notification?.variant || "";
+  // FIX 1: Destructure `i18n` from the hook to access the current language
+  const { t, i18n } = useTranslation("notificationsApp");
+  const currentLang = i18n.language as keyof LocaleString; // e.g., 'en' or 'ar'
 
-  const handleClose = (ev) => {
+  const variant = notification?.variant;
+
+  const handleClose = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
     ev.stopPropagation();
     onClose?.(notification.id);
   };
 
+  const isLink = notification.recordId 
+  const Component = isLink ? NavLinkAdapter : "div";
+
+  console.log(`${notification.type}s/${notification.recordId}`)
   return (
     <Card
       className={clsx(
-        "flex notifications-center relative w-full rounded-16 p-20 min-h-64 shadow space-x-8",
+        "flex items-center relative w-full rounded-16 p-20 min-h-64 shadow space-x-8",
         variant === "success" && "bg-green-600 text-white",
         variant === "info" && "bg-blue-700 text-white",
         variant === "error" && "bg-red-600 text-white",
@@ -39,13 +47,12 @@ function NotificationCard({
         className
       )}
       elevation={0}
-      component={notification.link ? NavLinkAdapter : "div"}
-      to={notification.link || ""}
-      role={notification.link && "button"}
+      component={Component}
+      {...(isLink && { to: `${notification.type}s/${notification.recordId}`, role: "button" })}
     >
       <Box
         sx={{ backgroundColor: "background.paper" }}
-        className="flex shrink-0 notifications-center justify-center w-32 h-32 me-8 rounded-full"
+        className="flex shrink-0 items-center justify-center w-32 h-32 me-8 rounded-full"
       >
         <FuseSvgIcon className="opacity-75" color="secondary">
           {toNotificationTypeIcon(notification.type)}
@@ -54,27 +61,29 @@ function NotificationCard({
 
       <div className="flex flex-col flex-auto">
         <Typography className="font-semibold line-clamp-1">
-          {notification.title ?? t("NOTIFICATION")}
+          {/* FIX 2: Select the string for the current language. Fallback to 'en', then to a generic term. */}
+          {notification.title?.[currentLang] ||
+            notification.title?.en ||
+            t("NOTIFICATION")}
         </Typography>
 
         {notification.content && (
-          <div
-            className="text-13"
-            // className="line-clamp-2"
-            // dangerouslySetInnerHTML={{ __html: notification.content }}
-          >
-            {notification.content}
-          </div>
+          <Typography className="text-13 line-clamp-2">
+            {/* FIX 3: Do the same for the content. Fallback to 'en'. */}
+            {notification.content[currentLang] || notification.content.en}
+          </Typography>
         )}
 
-        <Typography
-          className="mt-8 text-sm leading-none "
-          color="text.secondary"
-        >
-          {formatDistanceToNow(new Date(notification.createdAt), {
-            addSuffix: true,
-          })}
-        </Typography>
+        {notification.createdAt && (
+          <Typography
+            className="mt-8 text-sm leading-none"
+            color="text.secondary"
+          >
+            {formatDistanceToNow(new Date(notification.createdAt), {
+              addSuffix: true,
+            })}
+          </Typography>
+        )}
       </div>
 
       <IconButton

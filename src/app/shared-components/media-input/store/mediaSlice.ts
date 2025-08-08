@@ -1,66 +1,57 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios, { AxiosProgressEvent } from "axios";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios, { AxiosProgressEvent } from 'axios';
+
+const s3AxiosInstance = axios.create();
 
 export const createMedia = createAsyncThunk<
-  object,
-  { userId: string; fileName: string }
->(
-  "mediaInput/createMedia",
-  async ({ userId, fileName }, { dispatch, getState, rejectWithValue }) => {
-    const response = await axios.post(`v1/media/pre-signed`, {
-      fileName,
-      userId,
-      "contentType": `image/${fileName.split('.')[1]}`
-    });
-    const data = await response.data;
-    return data;
-  }
-);
-
-export const uploadMedia = createAsyncThunk<
-  object,
-  {
-    url: string;
-    fields: any[];
-    file: File;
-    onUploadProgress: (progressEvent: AxiosProgressEvent) => void;
-  }
->(
-  "mediaInput/uploadMedia",
-  async (
-    { url, fields, file, onUploadProgress },
-    { dispatch, getState, rejectWithValue }
-  ) => {
-    var bodyFormData = new FormData();
-
-    for (var key in fields) {
-      bodyFormData.append(key, fields[key]);
-    }
-    bodyFormData.append("file", file);
-    const response = await axios({
-      method: "put",
-      url: url,
-      data: bodyFormData,
-      withCredentials: true,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-        Authorization: undefined,
-      },
-      onUploadProgress: onUploadProgress,
-      baseURL: "/",
-    });
-    const data = await response.data;
-    return data;
-  }
-);
-
-const filterItemsSlice = createSlice({
-  name: "mediaInput",
-  initialState: {},
-  reducers: {},
+	{ url: string; [key: string]: any },
+	{ userId: string; fileName: string; contentType: string }
+>('mediaInput/createMedia', async ({ userId, fileName, contentType }, { rejectWithValue }) => {
+	try {
+		const response = await axios.post('v1/media/pre-signed', {
+			fileName,
+			userId,
+			contentType
+		});
+		return response.data;
+	} catch (error: any) {
+		console.error('Failed to get pre-signed URL:', error.response?.data || error.message);
+		return rejectWithValue(error.response?.data || 'Could not create media URL');
+	}
 });
 
-export default filterItemsSlice.reducer;
+interface UploadMediaArgs {
+	url: string; // The pre-signed URL
+	file: File;
+	onUploadProgress: (progressEvent: AxiosProgressEvent) => void;
+}
+
+export const uploadMedia = createAsyncThunk<boolean, UploadMediaArgs>(
+	'mediaInput/uploadMedia',
+	async ({ url, file, onUploadProgress }, { rejectWithValue }) => {
+		try {
+			const response = await s3AxiosInstance.put(url, file, {
+				headers: {
+					'Content-Type': file.type,
+					Authorization: undefined
+				},
+				onUploadProgress
+			});
+
+			// A successful PUT to S3 returns a 200 OK status.
+			return response.status === 200;
+		} catch (error: any) {
+			// Log the detailed XML error message from S3 for debugging.
+			console.error('Direct S3 upload failed. S3 Response:', error.response?.data);
+			return rejectWithValue(error.response?.data || 'File upload failed');
+		}
+	}
+);
+
+const mediaInputSlice = createSlice({
+	name: 'mediaInput',
+	initialState: {},
+	reducers: {}
+});
+
+export default mediaInputSlice.reducer;

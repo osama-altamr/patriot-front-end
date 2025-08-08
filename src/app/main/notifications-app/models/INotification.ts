@@ -1,24 +1,19 @@
+import { LocaleString } from "../../utils/commonTypes";
+
 export default interface INotification {
   id: string;
-  senderId?: string;
-  receiverId?: string;
-  senderType?: "Student" | "Organization" | "Admin";
-  receiverType?: "Student" | "Organization" | "Admin";
   type?:
-    | "account"
     | "order"
-    | "course"
-    | "certificate"
-    | "request"
-    | "payment"
-    | "invoice"
+    | "product"
     | "system"
     | "other";
-  title?: string;
-  content?: string;
+  title?: LocaleString;
+  content?: LocaleString;
   isSeen?: boolean;
-  link?: string;
-  variant?: "primary" | "secondary" | "success" | "info" | "warning" | "error";
+  recordId?: string
   createdAt?: string;
   updatedAt?: string;
+
+  variant?: "success" | "info" | "error" | "warning";
+  link?: string;
 }

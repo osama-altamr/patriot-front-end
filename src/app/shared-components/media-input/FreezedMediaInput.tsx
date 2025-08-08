@@ -104,10 +104,10 @@ function FreezedMediaInput(props: FreezedMediaInputProps) {
 
         setFinished(true);
         if (!preventSetValue) {
-          onChange(awsData.url + awsData.fields.key);
+          onChange(awsData.url.split('?')[0]);
         }
         if (onUploadDone) {
-          onUploadDone(awsData.url + awsData.fields.key);
+          onUploadDone(awsData.url.split('?')[0]);
         }
       });
     });

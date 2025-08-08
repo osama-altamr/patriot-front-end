@@ -87,6 +87,16 @@ const navigationConfig: FuseNavItemType[] = [
 		end: true
 	},
 	{
+		id: 'order.all',
+		title: 'Orders',
+		type: 'item',
+		customIcon: true,
+		icon: 'fa6-FaClipboardList',
+		url: '/orders',
+		translate: 'ORDERS',
+		end: true
+	},
+	{
 		id: 'report.all',
 		title: 'Reports',
 		type: 'item',

@@ -51,11 +51,10 @@ const locales = {
       "حدث خطأ عند الغاء تفعيل المنتج!",
     DESCRIPTION: "الوصف",
 IMAGE_URL: "الصورة",
-HEIGHT: "الإرتفاع",
+HEIGHT: "الارتفاع",
 WIDTH: "العرض",
-CATEGORY: "التصنيف",SELECT_SINGLE_CATEGORY: "اختر المنتج واحدة فقط",
-RATINGS_QUANTITY: "التقييم",
-RATINGS_AVERAGE: "وسطي التقييم",
+CATEGORY: "الصنف",SELECT_SINGLE_CATEGORY: "اختر المنتج واحدة فقط",
+STAGES: "المراحل",SELECT_MULTIPLE_STAGES: "اختر المنتجات متعددة",
     
   };
   

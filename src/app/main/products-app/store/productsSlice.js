@@ -66,7 +66,6 @@ export const productsAppSlice = createSlice({
     selectProductsPage: (productsApp) => productsApp.page,
     selectProductsPageSize: (productsApp) => productsApp.pageSize,
     selectProductsSearchText: (productsApp) => productsApp.searchText,
-    
     selectProductsCategoryIdFilter: (productsApp) => productsApp.categoryIdFilter,
     selectProductsDateFromFilter: (productsApp) => productsApp.dateFromFilter,
     selectProductsDateToFilter: (productsApp) => productsApp.dateToFilter,

@@ -1,5 +1,6 @@
 import { LocaleString } from "src/app/main/utils/commonTypes";
 import ICategory from "../../categorys-app/models/ICategory"
+import IStage from "../../stages-app/models/IStage"
 
   export default interface IProduct {
   id: string;
@@ -10,8 +11,8 @@ height?: number;
 width?: number;
 categoryId?: string;
 category?: ICategory;
-ratingsQuantity?: number;
-ratingsAverage?: number;
+stageIds?: string[];
+stage?: IStage[];
   
   createdAt?: string;
   updatedAt?: string;

@@ -23,11 +23,16 @@ import BasicInfoTab from './tabs/BasicInfoTab';
 function Employee() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const { t } = useTranslation('employeesApp');
+	const scopeObject = z.object({
+		feature: z.string(),
+		write: z.boolean(),
+		read: z.boolean()
+	})
 	const schema = z.object({
 		userId: requiredStringValidation(),
 		stageId: optionalStringValidation(),
 		accessType: requiredStringValidation(),
-		scopes: arrayValidation()
+		scopes: arrayValidation({ itemSchema: scopeObject, minLength: 1 })
 	});
 	const routeParams = useParams();
 	const { employeeId } = routeParams;

@@ -6,7 +6,6 @@ import { FuseRouteConfigsType, FuseRoutesType } from '@fuse/utils/FuseUtils';
 import AuthAppConfigs from '../main/auth-app/AuthAppConfigs';
 import CommonConfigs from '../main/common/CommonConfigs';
 import StagesAppConfig from '../main/stages-app/StagesAppConfig';
-import ProductsAppConfig from '../main/products-app/ProductsAppConfig';
 import CategoriesAppConfig from '../main/categories-app/CategoriesAppConfig';
 import MaterialsAppConfig from '../main/materials-app/MaterialsAppConfig';
 import StatesAppConfig from '../main/states-app/StatesAppConfig';
@@ -14,10 +13,16 @@ import CitiesAppConfig from '../main/cities-app/CitiesAppConfig';
 import EmployeesAppConfig from '../main/employees-app/EmployeesAppConfig';
 import UsersAppConfig from '../main/users-app/UsersAppConfig';
 import ComplaintsAppConfig from '../main/complaints-app/ComplaintsAppConfig';
-import ReportsAppConfig from "../main/reports-app/ReportsAppConfig";
+import ReportsAppConfig from '../main/reports-app/ReportsAppConfig';
+import HomeAppConfig from '../main/home-app/HomeAppConfig';
+import ProductsAppConfig from '../main/products-app/ProductsAppConfig';
+import OrdersAppConfig from "../main/orders-app/OrdersAppConfig";
 
 const routeConfigs: FuseRouteConfigsType = [
-ReportsAppConfig,
+OrdersAppConfig,
+	ProductsAppConfig,
+	HomeAppConfig,
+	ReportsAppConfig,
 	UsersAppConfig,
 	ComplaintsAppConfig,
 	EmployeesAppConfig,
@@ -25,7 +30,6 @@ ReportsAppConfig,
 	StatesAppConfig,
 	MaterialsAppConfig,
 	CategoriesAppConfig,
-	ProductsAppConfig,
 	StagesAppConfig,
 	...CommonConfigs,
 	...AuthAppConfigs

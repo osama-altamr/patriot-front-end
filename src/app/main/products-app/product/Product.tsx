@@ -19,10 +19,10 @@ import ProductModel, { productDefaultValues } from "../models/ProductModel";
 import IProduct from "../models/IProduct";
 import {
   requiredBooleanValidation,
-  requiredStringValidation,
-optionalStringValidation,
+  optionalStringValidation,
 localeStringValidation,
-optionalNumberValidation,
+requiredNumberValidation,
+arrayValidation,
 } from "src/app/main/utils/validations";
 import BasicInfoTab from "./tabs/BasicInfoTab";
 
@@ -31,12 +31,12 @@ function Product() {
   const { t } = useTranslation("productsApp");
   const schema = z.object({
     name: localeStringValidation(),
-description: localeStringValidation({ requiredLanguages: [] }),
-imageUrl: optionalStringValidation(),
-height: optionalNumberValidation({ positive: true, nonZero: true }),
-width: optionalNumberValidation({ positive: true, nonZero: true }),
-categoryId: requiredStringValidation(),
-    
+    description: localeStringValidation({ requiredLanguages: [] }),
+    imageUrl: optionalStringValidation(),
+    height: requiredNumberValidation({ positive: true, nonZero: true }),
+    width: requiredNumberValidation({ positive: true, nonZero: true }),
+    categoryId: optionalStringValidation(),
+    stageIds: arrayValidation( {optional: true} ),
   });
   const routeParams = useParams();
   const { productId } = routeParams;

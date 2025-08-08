@@ -41,6 +41,7 @@ function MediaInput(props: MediaInputProps) {
     }
   }
   function handleCreateFile(data: MediaInputData) {
+    console.log(data.name, data.file.type)
     setPickedData(data);
     setProgress(null);
     setFinished(false);
@@ -48,6 +49,7 @@ function MediaInput(props: MediaInputProps) {
       createMedia({
         userId: user.id,
         fileName: data.name,
+        contentType: data.file.type 
       })
     ).then((action: any) => {
       if (!action.payload && action.error) {
@@ -80,6 +82,7 @@ function MediaInput(props: MediaInputProps) {
           onUploadProgress,
         })
       ).then((awsAction: any) => {
+        console.log(awsAction)
         if (!awsAction.payload && awsAction.error) {
           const message = t("SOMETHING_WENT_WRONG_WHEN_UPLOAD_LABEL_IMAGE", {
             label: label.charAt(0).toLowerCase() + label.slice(1),
@@ -103,11 +106,12 @@ function MediaInput(props: MediaInputProps) {
         }
 
         setFinished(true);
+        console.log(awsData.url)
         if (!preventSetValue) {
-          setValue(name, awsData.url + awsData.fields.key);
+          setValue(name, awsData.url.split('?')[0]);
         }
         if (onUploadDone) {
-          onUploadDone(awsData.url + awsData.fields.key);
+          onUploadDone(awsData.url.split('?')[0]);
         }
       });
     });

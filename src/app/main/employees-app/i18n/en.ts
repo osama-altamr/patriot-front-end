@@ -67,7 +67,8 @@ const locales = {
 	REPORTS: 'Reports',
 	USERS: 'Users',
 	STATES: 'States',
-	CITIES: 'Cities'
+	CITIES: 'Cities',
+	OPERATIONS: 'Operations'
 };
 
 export default locales;

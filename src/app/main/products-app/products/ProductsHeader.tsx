@@ -17,6 +17,7 @@ import {
   setProductsDateToFilter,
   setProductsSearchText,
   productsInitialState,
+  
   selectProductsCategoryIdFilter,
   setProductsCategoryIdFilter,
 } from "../store/productsSlice";
@@ -26,6 +27,7 @@ import _ from "lodash";
 import localeString from "src/app/main/utils/localeString";
 import { useAppSelector } from "app/store/hooks";
 import { selectUser } from "src/app/auth/user/store/userSlice";
+
 
 /**
  * The Products header.
@@ -37,11 +39,12 @@ function ProductsHeader() {
   const user = useAppSelector(selectUser);
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const searchText = useSelector(selectProductsSearchText);
-
+  
   const categoryIdFilter = useSelector(selectProductsCategoryIdFilter);
   const dateFromFilter = useSelector(selectProductsDateFromFilter);
   const dateToFilter = useSelector(selectProductsDateToFilter);
-
+  
+  
   function handleChangeCategoryIdFilter(event) {
     dispatch(setProductsCategoryIdFilter(event));
   }
@@ -70,15 +73,16 @@ function ProductsHeader() {
         >
           <FilterIcon
             filters={[
+              
               {
-                type: FilterTypes.autocomplete,
-                title: t("CATEGORY"),
-                value: categoryIdFilter,
-                onChange: handleChangeCategoryIdFilter,
-                getItemUrl: `v1/categories`,
-                getItemsUrl: `v1/categories`,
-                closeOnChange: false,
-              },
+    type: FilterTypes.autocomplete,
+title: t("CATEGORY"),
+value: categoryIdFilter,
+onChange: handleChangeCategoryIdFilter,
+getItemUrl: `v1/categorys`,
+getItemsUrl: `v1/categorys`,
+closeOnChange: false,
+  },
               {
                 type: FilterTypes.dateTime,
                 title: t("START_DATE"),
@@ -100,6 +104,7 @@ function ProductsHeader() {
             ]}
             changesCount={
               [
+                
                 !_.isEqual(dateFromFilter, productsInitialState.dateFromFilter),
                 !_.isEqual(dateToFilter, productsInitialState.dateToFilter),
               ].filter(Boolean).length
@@ -136,22 +141,22 @@ function ProductsHeader() {
           </Paper>
         </motion.div>
         <motion.div
-          className="flex flex-grow-0"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-        >
-          <Button
-            variant="contained"
-            color="secondary"
-            component={NavLinkAdapter}
-            to={`/products/new`}
-            startIcon={
-              <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-            }
+            className="flex flex-grow-0"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
           >
-            {t(`ADD_PRODUCT`)}
-          </Button>
-        </motion.div>
+            <Button
+              variant="contained"
+              color="secondary"
+              component={NavLinkAdapter}
+              to={`/products/new`}
+              startIcon={
+                <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
+              }
+            >
+              {t(`ADD_PRODUCT`)}
+            </Button>
+          </motion.div>
       </div>
     </div>
   );

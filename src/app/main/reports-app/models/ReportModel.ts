@@ -1,17 +1,35 @@
-import _ from "@lodash";
-import { PartialDeep } from "type-fest";
-import IReport from "./IReport";
+import IReport from './IReport';
+import { PartialDeep } from 'type-fest';
 
+export const reportEditableFields: (keyof IReport)[] = [
+	'name',
+	'type',
+	'startDate',
+	'endDate',
+];
 
-const ReportModel = (data: PartialDeep<IReport>) =>
-  _.defaults(data || {}, {
-    name: {en: "", ar: ""},
-type: "",
-startDate: "",
+export const reportDefaultValues: IReport = {
+	id: null,
+	name: { en: '', ar: ''},
+	type: '',
+	startDate: new Date().toISOString(),
+	endDate: null,
+	xlsxUrl: null,
+	// Order defaults
+	orderSummary: null,
+	orderBreakdownByStatus: [],
+	orders: [],
+	// Employee defaults
+	employeeBreakdownByType: { drivers: [], employees: [] },
+	// Complaint defaults
+	complaintSummary: null,
+	complaintBreakdownByStatus: [],
+	complaintBreakdownByType: [],
+};
 
-    
-  });
-export const reportDefaultValues = ReportModel({});
-export const reportEditableFields = ["name", "type", "startDate", ];
+function ReportModel(data: PartialDeep<IReport>): IReport {
+	const report = { ...reportDefaultValues, ...data };
+	return report;
+}
 
 export default ReportModel;

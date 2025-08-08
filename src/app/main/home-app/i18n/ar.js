@@ -1,0 +1,28 @@
+const locales = {
+  WELCOME_BACK: "مرحباً بعودتك",
+  USERS: "المستخدمين",
+  PRODUCTS: "المنتجات",
+  HOTELS: "الفنادق",
+  ORDERS: "طلبات التسليم",
+  SETTINGS: "الإعدادات",
+  INCOMES: "طلبات الإستلام",
+  NEW_INCOME: "إضافة طلب استلام",
+  HOTELS_VS_PRODUCTS: "الفنادق والطلبات",
+  ONLY_ORDERS: "الطلبات",
+  MONTH: "الشهر",
+  ORDERED_PRODUCTS: "المنتجات المطلوبة",
+  ORDERS_VS_PRODUCTS: "طلبات التسليم والمنتجات",
+  INCOMES_VS_PRODUCTS: "طلبات الإستلام والمنتجات",
+  PROCESSING: "قيد المعالجة",
+  RETURNED: "مرتجعة",
+  ACCEPTED: "مقبولة",
+  NEW_ORDER:  "إضافة طلب",
+  NEW_PRODUCT:"إضافة منتج",
+  MATERIALS: 'القطع',
+  CATEGORIES: 'الاصناف',
+  COMPLAINTS: 'الشكاوي',
+  REPORTS: 'التقارير',
+  STAGES: 'مراحل التصنيع',
+};
+
+export default locales;

@@ -18,22 +18,17 @@ function FieldFieldInput({
   hint,
   containerClassName,
   className = "mt-8 mb-16 me-8",
-  fileUrl,
-  maximumFileSizeInKB,
   handleCreateUploadFile,
   pickedData,
   progress,
   finished,
   error,
-  setError,
   required = false,
   hideUpload = false,
   disabled = false,
   size,
 }: FileFieldInputProps) {
   const { t } = useTranslation("public");
-  const user = useAppSelector(selectUser);
-  const dispatch = useDispatch<AppDispatch>();
   const methods = useFormContext();
   const { getFieldState, control } = methods;
 
@@ -96,7 +91,7 @@ function FieldFieldInput({
                     }
                     const reader = new FileReader();
 
-                    reader.onload = (event) => {
+                    reader.onload = () => {
                       resolve({
                         file: e.target.files[0],
                         // name: e.target.files[0].name.split(".").pop(),

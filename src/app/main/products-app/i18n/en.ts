@@ -59,8 +59,7 @@ IMAGE_URL: "Image",
 HEIGHT: "Height",
 WIDTH: "Width",
 CATEGORY: "Category",SELECT_SINGLE_CATEGORY: "Select single product",
-RATINGS_QUANTITY: "Ratings",
-RATINGS_AVERAGE: "Ratings Average",
+STAGES: "Stages",SELECT_MULTIPLE_STAGES: "Select multiple products",
       
     };
     

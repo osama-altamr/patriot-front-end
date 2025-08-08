@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Box, Typography, alpha, TextField, MenuItem } from '@mui/material';
@@ -121,6 +124,7 @@ function BasicInfoTab({ complaint }: { complaint?: IComplaint }) {
 				label={t('USER')}
 				placeholder={t('SELECT_SINGLE_USER')}
 				getItemUrl="v1/users"
+				getOptionLabel={(option: any) => option.name || ''}
 				getItemsUrl="v1/users"
 				defaultItem={complaint?.user}
 				defaultItemId={complaint?.userId}
@@ -131,6 +135,7 @@ function BasicInfoTab({ complaint }: { complaint?: IComplaint }) {
 				placeholder={t('SELECT_SINGLE_CLOSED_BY')}
 				getItemUrl="v1/users"
 				getItemsUrl="v1/users"
+				getOptionLabel={(option: any) => option.name || ''}
 				defaultItem={complaint?.closedBy}
 				defaultItemId={complaint?.closedById}
 				required={false}

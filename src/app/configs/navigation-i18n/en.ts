@@ -1,4 +1,6 @@
 const locale = {
+ORDERS: "Orders",
+PRODUCTS: "Products",
 REPORTS: "Reports",
 COMPLAINTS: "Complaints",
 	ALL_USERS: 'Users',

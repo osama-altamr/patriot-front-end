@@ -67,7 +67,9 @@ const locales = {
 	REPORTS: 'التقارير',
 	USERS: 'المستخدمين',
 	STATES: 'المحافظات',
-	CITIES: 'المدن'
+	CITIES: 'المدن',
+	OPERATIONS: 'العمليات',
+	PERMISSIONS: 'الصلاحيات',
 };
 
 export default locales;
