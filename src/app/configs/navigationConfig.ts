@@ -7,6 +7,16 @@ i18next.addResourceBundle('en', 'navigation', en);
 i18next.addResourceBundle('ar', 'navigation', ar);
 
 const navigationConfig: FuseNavItemType[] = [
+{
+    id: "operation.all",
+    title: "Operations",
+    type: "item",
+    customIcon: true,
+    icon: "fa6-FaDiceD6",
+    url: "/operations",
+    translate: "OPERATIONS",
+    end: true,
+  },
 	{
 		id: 'dashboard',
 		title: 'Dashboard',

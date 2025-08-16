@@ -1,4 +1,5 @@
 const locale = {
+OPERATIONS: "Operations",
 ORDERS: "Orders",
 PRODUCTS: "Products",
 REPORTS: "Reports",

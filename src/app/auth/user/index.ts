@@ -1,3 +1,5 @@
+import IStage from "src/app/main/stages-app/models/IStage";
+
 export const userRoles = {
 	admin: 'admin',
 	organization: 'organization'
@@ -14,6 +16,26 @@ export type Address = {
 	complex?: string;
 };
 
+export enum UserAcessType {
+	driver = 'driver',
+	admin = 'admin',
+	owner = 'owner',
+	employee = 'employee'
+}
+
+interface Scope {
+	read: boolean;
+	write: boolean;
+	feature: string;
+}
+
+export type Permission = {
+	scope: Scope;
+	accessType: UserAcessType;
+	stageId: string
+	stage: IStage
+};
+
 export type User = {
 	id: string;
 	role?: string;
@@ -24,4 +46,5 @@ export type User = {
 	createdAt?: string;
 	updatedAt?: string;
 	address?: Address;
+	permissions?: Permission;
 };
