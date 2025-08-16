@@ -17,9 +17,11 @@ import ReportsAppConfig from '../main/reports-app/ReportsAppConfig';
 import HomeAppConfig from '../main/home-app/HomeAppConfig';
 import ProductsAppConfig from '../main/products-app/ProductsAppConfig';
 import OrdersAppConfig from "../main/orders-app/OrdersAppConfig";
+import OperationsAppConfig from "../main/operations-app/OperationsAppConfig";
 
 const routeConfigs: FuseRouteConfigsType = [
-OrdersAppConfig,
+	OperationsAppConfig,
+	OrdersAppConfig,
 	ProductsAppConfig,
 	HomeAppConfig,
 	ReportsAppConfig,
