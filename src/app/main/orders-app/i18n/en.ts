@@ -85,7 +85,10 @@ const locales = {
 	CHANGE_DRIVER: 'Change Driver',
 	DRIVER_CAN_BE_ASSIGNED_AFTER_ORDER_IS_COMPLETED:
 		'A driver can be assigned only after the order is marked as completed.',
-	ADD_ITEM: 'Add Item'
+	ADD_ITEM: 'Add Item',
+	NEW: 'New',
+	IN_PROGRESS: 'In Progress', // Use a consistent key
+	UNKNOWN_STATUS: 'Unknown', 
 };
 
 export default locales;

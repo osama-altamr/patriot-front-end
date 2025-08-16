@@ -73,7 +73,6 @@ const OperationApi = api
 				invalidatesTags: ['Operations', 'Operation']
 			}),
 
-			// --- New Glass Cutting Endpoints ---
 			runGlassCuttingAlgorithm: build.mutation<
 				RunGlassCuttingAlgorithmApiResponse,
 				RunGlassCuttingAlgorithmApiArg
@@ -91,6 +90,14 @@ const OperationApi = api
 					url: `v1/orders/material-grid`
 				}),
 				providesTags: ['MaterialGrid']
+			}),
+			updateOrderItemStage: build.mutation<void, UpdateOrderItemStageApiArg>({
+				query: ({ itemId, ...body }) => ({
+					url: `v1/orders/items/${itemId}`,
+					method: 'PATCH',
+					data: body
+				}),
+				invalidatesTags: ['MaterialGrid', 'Operations']
 			})
 		}),
 		overrideExisting: false
@@ -98,10 +105,13 @@ const OperationApi = api
 
 export default OperationApi;
 
-// --- Type Exports ---
-
 export type CreateOperationApiResponse = /** status 200 OK */ IOperation;
 export type CreateOperationApiArg = PartialDeep<IOperation>;
+
+export type UpdateOrderItemStageApiArg = {
+	itemId: string;
+	currentStageId: string;
+}
 
 export type GetOperationsApiResponse = /** status 200 OK */ {
 	results: IOperation[];
@@ -169,7 +179,8 @@ export const {
 	useGetOperationQuery,
 	useUpdateOperationMutation,
 	useRunGlassCuttingAlgorithmMutation,
-	useGetMaterialGridQuery
+	useGetMaterialGridQuery,
+  useUpdateOrderItemStageMutation,
 } = OperationApi;
 
 export type OperationApiType = {

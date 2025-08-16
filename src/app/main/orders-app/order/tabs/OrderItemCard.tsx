@@ -29,6 +29,21 @@ const getDuration = (start?: string, end?: string) => {
 	return `${minutes}m ${seconds}s`;
 };
 
+const statusConfig = {
+	pending: {
+		labelKey: 'PENDING', // Or whatever your translation key is
+		colorClass: 'bg-yellow-500', // Example using Tailwind CSS
+	},
+	inProgress: {
+		labelKey: 'IN_PROGRESS',
+		colorClass: 'bg-blue-500',
+	},
+	completed: {
+		labelKey: 'COMPLETED',
+		colorClass: 'bg-green-500',
+	},
+};
+
 function OrderItemActionsTable({ actions }: { actions: IOrderItemAction[] }) {
 	const { t } = useTranslation('ordersApp');
 
@@ -138,26 +153,27 @@ function OrderItemCard({ item }: { item: IOrderItem }) {
 								<Typography>{localeString(item.currentStage?.name) || 'N/A'}</Typography>
 							</div>
 							<div>
-								<Typography
-									variant="caption"
-									color="text.secondary"
-								>
-									{t('ITEM_STATUS')}
-								</Typography>
-								{item.status ? (
-									<Chip
-										label={t(toOrderStatusTitle(item.status))}
-										className={toOrderStatusColor(item.status)}
-										classes={{ label: 'text-white' }}
-										size="small"
-									/>
-								) : (
-									<Chip
-										label={t('NEW')}
-										size="small"
-									/>
-								)}
-							</div>
+            <Typography
+                variant="caption"
+                color="text.secondary"
+            >
+                {t('ITEM_STATUS')}
+            </Typography>
+            {item.status ? (
+                <Chip
+                    label={t( statusConfig[item.status]?.labelKey || 'UNKNOWN_STATUS')}
+                    className={ statusConfig[item.status]?.colorClass || 'bg-gray-400'}
+                    classes={{ label: 'text-white' }}
+                    size="small"
+                />
+            ) : (
+                <Chip
+                    // The case where the item is new and has no status yet
+                    label={t('NEW')}
+                    size="small"
+                />
+            )}
+        </div>
 						</Box>
 
 						{item.note && (

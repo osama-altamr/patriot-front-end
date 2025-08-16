@@ -165,7 +165,7 @@ function GlassCuttingPage() {
 					</form>
 				</FormProvider>
 			</Dialog>
-			<div className="mt-32">
+			<div className="mt-32 self-stretch">
 				<MaterialGridDisplay />
 			</div>
 		</div>

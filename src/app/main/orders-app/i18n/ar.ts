@@ -83,7 +83,11 @@ const locales = {
 	DRIVER_CAN_BE_ASSIGNED_AFTER_ORDER_IS_COMPLETED: 'لا يمكن تعيين سائق إلا بعد اكتمال الطلب.',
   MATERIAL_OPTIONAL: 'المادة (اختياري)',
   "NOT_SPECIFIED": "غير محدد",
-  ADD_ITEM: 'اضافة عنصر'
+  ADD_ITEM: 'اضافة عنصر',
+
+  NEW: 'جديد', // It's good to have a key for 'NEW' as well
+  IN_PROGRESS: 'قيد المعالجة', // Use IN_PROGRESS key to match 'processing' value
+  UNKNOWN_STATUS: 'حالة غير معروفة', // A fallback for safety
 };
 
 export default locales;
