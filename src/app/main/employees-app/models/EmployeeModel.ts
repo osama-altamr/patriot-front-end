@@ -5,7 +5,6 @@ import IEmployee from './IEmployee';
 const EmployeeModel = (data: PartialDeep<IEmployee>) =>
 	_.defaults(data || {}, {
 		userId: '',
-
 		accessType: '',
 		scopes: []
 	});

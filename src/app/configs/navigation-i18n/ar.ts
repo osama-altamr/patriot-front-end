@@ -1,4 +1,5 @@
 const locale = {
+STAGE_DESIGNS: "تصميات المراحل",
 OPERATIONS: "العمليات",
 ORDERS: "الطلبات",
 PRODUCTS: "المنتجات",
@@ -13,7 +14,9 @@ COMPLAINTS: "الشكاوي",
 	LOCATIONS: 'المواقع',
 	CITIES: 'المدن',
 	STATES: 'المحافظات', // Corrected spelling
-	FACTOR_STAGES: 'مراحل التصنيع'
+	FACTOR_STAGES: 'مراحل التصنيع',
+	  "STAGES_MANAGEMENT": " المراحل",
+	  "LOCATION_MANAGEMENT": " المواقع",
 };
 
 export default locale;

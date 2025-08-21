@@ -1,5 +1,5 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Button, Typography } from '@mui/material';
+import { Button, Tooltip, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
@@ -7,9 +7,16 @@ import AddItemDialog from './AddItemDialog';
 import OrderItemCard from './OrderItemCard';
 import IOrder, { IOrderItem } from '../../models/IOrder';
 
-function ItemsTab() {
+interface ItemsTabProps {
+	order?: IOrder;
+}
+
+function ItemsTab({ order }: ItemsTabProps) {
 	const { t } = useTranslation('ordersApp');
-	const { control } = useFormContext<IOrder>();
+	const { control, watch } = useFormContext<IOrder>();
+
+	const orderStatus = watch('status');
+	const isOrderCompleted = orderStatus === 'completed';
 
 	const { fields, append } = useFieldArray({
 		control,
@@ -26,21 +33,25 @@ function ItemsTab() {
 			height: number;
 			note?: string;
 		},
-		product: any,
+		product: any, // This is the full product object from the autocomplete
 		material: any | null
 	) => {
+		if (isOrderCompleted) return;
+
 		const itemToAppend = {
-			productId: product as string,
-			materialId: material as string,
+			// Core data from the dialog
 			width: newItemData.width,
 			height: newItemData.height,
 			note: newItemData.note,
-			id: '',
-			status: 'new',
-			qrCode: ''
+			productId: product,
+			materialId: material,
+			id: '', // Must be undefined or missing, not an empty string
+			price: 0,
+			status: 'new', // A temporary status for display
+			qrCode: '',
+			currentStage: null,
 		};
 
-		console.log(itemToAppend)
 		append(itemToAppend);
 		setIsAddItemDialogOpen(false);
 	};
@@ -48,27 +59,40 @@ function ItemsTab() {
 	return (
 		<div>
 			<div className="flex items-center justify-between mb-16">
-				<Typography className="text-2xl font-semibold">Items</Typography>
-				<Button
-					variant="contained"
-					color="primary"
-					startIcon={<FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>}
-					onClick={() => setIsAddItemDialogOpen(true)}
-				>
-					{t('ADD_NEW_ITEM')}
-				</Button>
+				<Typography className="text-2xl font-semibold">{t('ITEMS')}</Typography>
+				<Tooltip title={isOrderCompleted ? t('CANNOT_ADD_ITEM_TO_COMPLETED_ORDER') : ''}>
+					<span> {/* Tooltip needs a span wrapper for disabled buttons */}
+						<Button
+							variant="contained"
+							color="primary"
+							startIcon={<FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>}
+							onClick={() => setIsAddItemDialogOpen(true)}
+							disabled={isOrderCompleted}
+						>
+							{t('ADD_NEW_ITEM')}
+						</Button>
+					</span>
+				</Tooltip>
 			</div>
 
 			{fields.length === 0 ? (
 				<Typography className="text-center p-24">{t('NO_ITEMS_IN_ORDER')}</Typography>
 			) : (
 				<div className="flex flex-col gap-16">
-					{fields.map((item, index) => (
-						<OrderItemCard
-							key={item.id}
-							item={fields[index] as IOrderItem}
-						/>
-					))}
+					{fields.map((field, index) => {
+						const originalItem = order?.items?.[index];
+
+						const itemData = { ...originalItem, ...field } as IOrderItem;
+
+						return (
+							<OrderItemCard
+								key={field.id} // Use the unique RHF id for the React key
+								item={itemData}
+								orderStatus={orderStatus}
+								itemId={originalItem?.id}
+							/>
+						);
+					})}
 				</div>
 			)}
 

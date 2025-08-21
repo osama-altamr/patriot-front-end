@@ -35,6 +35,7 @@ function Order() {
 	const [tabValue, setTabValue] = useState(0);
 
 	const schema = z.object({
+		total: z.coerce.number({ invalid_type_error: 'Total must be a number' }).positive('Total must be a positive number').optional(),
 		priority: optionalStringValidation(),
 		note: optionalStringValidation(),
 		ref: optionalStringValidation(),
@@ -187,7 +188,7 @@ function Order() {
 									onAssignDriver={handleAssignDriver}
 								/>
 							)}
-							{tabValue === 1 && <ItemsTab />}
+							{tabValue === 1 && <ItemsTab order={order} />}
 						</div>
 					</>
 				}

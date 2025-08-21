@@ -9,6 +9,7 @@ export const addTagTypes = ['Orders', 'Order'] as const;
 
 export type CreateOrderPayload = {
 	priority: string;
+	total: number
 	address: {
 		stateId: string;
 		cityId: string;
@@ -101,7 +102,15 @@ const OrderApi = api
 					data: CreateOrderModel(newOrderData)
 				}),
 				invalidatesTags: ['Orders', 'Order']
-			})
+			}),
+			updateOrderItem: build.mutation<UpdateOrderItemApiResponse, UpdateOrderItemApiArg>({
+				query: ({ itemId, ...body }) => ({
+					url: `v1/orders/items/${itemId}`,
+					method: 'PATCH',
+					data: body
+				}),
+				invalidatesTags: ['Order'],
+			}),
 		}),
 		overrideExisting: false
 	});
@@ -116,6 +125,13 @@ export type GetOrdersApiResponse = /** status 200 OK */ {
 	results: IOrder[];
 	total: number;
 };
+
+export type UpdateOrderItemApiArg = {
+	itemId: string;
+	price?: number;
+	// You can add other editable fields here in the future, e.g., note?: string
+};
+
 export type GetOrdersApiArg = {
 	page: number;
 	pageSize: number;
@@ -142,7 +158,8 @@ export const {
 	useCreateOrderMutation,
 	useRemoveOrderMutation,
 	useGetOrderQuery,
-	useUpdateOrderMutation
+	useUpdateOrderMutation,
+	useUpdateOrderItemMutation,
 } = OrderApi;
 
 export type OrderApiType = {

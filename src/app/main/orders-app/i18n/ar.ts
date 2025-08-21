@@ -81,13 +81,16 @@ const locales = {
 	ERROR_ASSIGNING_DRIVER: 'خطأ في تعيين السائق',
 	CHANGE_DRIVER: 'تغيير السائق',
 	DRIVER_CAN_BE_ASSIGNED_AFTER_ORDER_IS_COMPLETED: 'لا يمكن تعيين سائق إلا بعد اكتمال الطلب.',
-  MATERIAL_OPTIONAL: 'المادة (اختياري)',
-  "NOT_SPECIFIED": "غير محدد",
-  ADD_ITEM: 'اضافة عنصر',
-
-  NEW: 'جديد', // It's good to have a key for 'NEW' as well
-  IN_PROGRESS: 'قيد المعالجة', // Use IN_PROGRESS key to match 'processing' value
-  UNKNOWN_STATUS: 'حالة غير معروفة', // A fallback for safety
+	MATERIAL_OPTIONAL: 'المادة (اختياري)',
+	NOT_SPECIFIED: 'غير محدد',
+	ADD_ITEM: 'اضافة عنصر',
+	NEW: 'جديد',
+	IN_PROGRESS: 'قيد المعالجة',
+	UNKNOWN_STATUS: 'جديد',
+	TOTAL: 'المجموع الكلي',
+	CANNOT_EDIT_COMPLETED_ORDER: 'لا يمكن تعديل العناصر بعد اكتمال الطلب.',
+	  "CANNOT_ADD_ITEM_TO_COMPLETED_ORDER": "لا يمكن إضافة عناصر جديدة إلى طلب مكتمل."
+	
 };
 
 export default locales;

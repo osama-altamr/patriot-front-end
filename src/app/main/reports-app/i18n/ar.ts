@@ -71,7 +71,22 @@ const locales = {
 	RESOLVED_COMPLAINTS: 'الشكاوى المحلولة',
 	COMPLAINT_BREAKDOWN_BY_STATUS: 'توزيع الشكاوى حسب الحالة',
 	COMPLAINT_BREAKDOWN_BY_TYPE: 'توزيع الشكاوى حسب النوع',
-	DOWNLOAD_EXCEL: 'تحميل إكسل'
+	DOWNLOAD_EXCEL: 'تحميل إكسل',
+	SALES: 'المبيعات',
+	SALE_SUMMARY: 'ملخص المبيعات',
+	AVERAGE_ORDER_VALUE: 'متوسط قيمة الطلب',
+	TOTAL_ITEMS_SOLD: 'إجمالي المنتجات المباعة',
+	DAILY_SALES_TREND: 'اتجاه المبيعات اليومي',
+	SALE_BREAKDOWN_BY_PRODUCT: 'تفاصيل المبيعات حسب المنتج',
+	SALE_BREAKDOWN_BY_CATEGORY: 'تفاصيل المبيعات حسب الفئة',
+	SALE_BREAKDOWN_BY_STATE: 'تفاصيل المبيعات حسب الولاية',
+	SALE_BREAKDOWN_BY_CITY: 'تفاصيل المبيعات حسب المدينة',
+	PRODUCT_NAME: 'اسم المنتج',
+	CATEGORY_NAME: 'اسم الفئة',
+	STATE_NAME: 'اسم الولاية',
+	CITY_NAME: 'اسم المدينة',
+	QUANTITY_SOLD: 'الكمية المباعة',
+	ORDER_COUNT: 'عدد الطلبات'
 };
 
 export default locales;

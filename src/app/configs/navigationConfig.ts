@@ -7,16 +7,6 @@ i18next.addResourceBundle('en', 'navigation', en);
 i18next.addResourceBundle('ar', 'navigation', ar);
 
 const navigationConfig: FuseNavItemType[] = [
-{
-    id: "operation.all",
-    title: "Operations",
-    type: "item",
-    customIcon: true,
-    icon: "fa6-FaDiceD6",
-    url: "/operations",
-    translate: "OPERATIONS",
-    end: true,
-  },
 	{
 		id: 'dashboard',
 		title: 'Dashboard',
@@ -57,14 +47,34 @@ const navigationConfig: FuseNavItemType[] = [
 		end: true
 	},
 	{
-		id: 'stage.all',
-		title: 'Factor Stages',
-		type: 'item',
+		id: 'stages.group',
+		title: 'Stages Management',
+		type: 'collapse',
 		customIcon: true,
 		icon: 'fa6-FaStairs',
-		url: '/stages',
-		translate: 'FACTOR_STAGES',
-		end: true
+		translate: 'STAGES_MANAGEMENT',
+		children: [
+			{
+				id: 'stage.all',
+				title: 'Factor Stages',
+				type: 'item',
+				customIcon: true,
+				icon: 'fa6-FaDiceD6',
+				url: '/stages',
+				translate: 'FACTOR_STAGES',
+				end: true
+			},
+			{
+				id: 'stageDesign.all',
+				title: 'Stage Designs',
+				type: 'item',
+				customIcon: true,
+				icon: 'fa6-FaDiceD6',
+				url: '/stage-designs',
+				translate: 'STAGE_DESIGNS',
+				end: true
+			}
+		]
 	},
 	{
 		id: 'material.all',
@@ -107,6 +117,16 @@ const navigationConfig: FuseNavItemType[] = [
 		end: true
 	},
 	{
+		id: 'operation.all',
+		title: 'Operations',
+		type: 'item',
+		customIcon: true,
+		icon: 'fa6-FaIndustry',
+		url: '/operations',
+		translate: 'OPERATIONS',
+		end: true
+	},
+	{
 		id: 'report.all',
 		title: 'Reports',
 		type: 'item',
@@ -116,57 +136,35 @@ const navigationConfig: FuseNavItemType[] = [
 		translate: 'REPORTS',
 		end: true
 	},
-
-	// {
-	//   id: "customer.create",
-	//   title: "Create New Customer",
-	//   type: "item",
-	//   customIcon: true,
-	//   icon: "fa6-FaPlus",
-	//   url: "y/new",
-	//   translate: "CREATE_NEW_CUSTOMER",
-	//   end: true,
-	// },
-	// {
-	//     id: "category.create",
-	//     title: "Create New Category",
-	//     type: "item",
-	//     customIcon: true,
-	//     icon: "fa6-FaPlus",
-	//     url: "/categories/new",
-	//     translate: "CREATE_NEW_CATEGORY",
-	//     end: true,
-	//   },
-
-	// {
-	//     id: "product.create",
-	//     title: "Create New Product",
-	//     type: "item",
-	//     customIcon: true,
-	//     icon: "fa6-FaPlus",
-	//     url: "/products/new",
-	//     translate: "CREATE_NEW_PRODUCT",
-	//     end: true,
-	//   },
 	{
-		id: 'state.all',
-		title: 'States',
-		type: 'item',
-		customIcon: true,
-		url: '/states',
-		icon: 'fa6-FaSitemap',
-		translate: 'STATES',
-		end: true
-	},
-	{
-		id: 'city.all',
-		title: 'Cities',
-		type: 'item',
+		id: 'location.group',
+		title: 'Location Management',
+		type: 'collapse',
 		customIcon: true,
 		icon: 'fa6-FaSitemap',
-		url: '/cities',
-		translate: 'CITIES',
-		end: true
+		translate: 'LOCATION_MANAGEMENT',
+		children: [
+			{
+				id: 'state.all',
+				title: 'States',
+				type: 'item',
+				customIcon: true,
+				url: '/states',
+				icon: 'fa6-FaCity',
+				translate: 'STATES',
+				end: true
+			},
+			{
+				id: 'city.all',
+				title: 'Cities',
+				type: 'item',
+				customIcon: true,
+				icon: 'fa6-FaCity',
+				url: '/cities',
+				translate: 'CITIES',
+				end: true
+			}
+		]
 	}
 ];
 export default navigationConfig;

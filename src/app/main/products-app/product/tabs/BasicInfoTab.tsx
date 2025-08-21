@@ -5,6 +5,7 @@ import CustomAutoComplete from 'app/shared-components/custom-auto-complete/Custo
 import LocaleInput from 'app/shared-components/locale-input/LocaleInput';
 import MediaInput from 'app/shared-components/media-input/MediaInput';
 import IProduct from '../../models/IProduct';
+import localeString from 'src/app/main/utils/localeString';
 
 function BasicInfoTab({ product }: { product?: IProduct }) {
 	const { t } = useTranslation('productsApp');
@@ -78,6 +79,24 @@ function BasicInfoTab({ product }: { product?: IProduct }) {
 					/>
 				)}
 			/>
+			<Controller
+				name="pricePerSquareMeter"
+				control={control}
+				render={({ field }) => (
+					<TextField
+						{...field}
+						className="mt-8 mb-16"
+						label={t('PRICE_PER_SQUARE_METER')}
+						type="number"
+						variant="outlined"
+						fullWidth
+						error={!!errors.pricePerSquareMeter}
+						helperText={errors?.pricePerSquareMeter?.message as string}
+						onChange={(e) => field.onChange(e.target.value === '' ? null : Number(e.target.value))}
+						value={field.value ?? ''} // Handle null values for the input
+					/>
+				)}
+			/>
 			<CustomAutoComplete
 				name="categoryId"
 				label={t('CATEGORY')}
@@ -97,6 +116,7 @@ function BasicInfoTab({ product }: { product?: IProduct }) {
 				getItemsUrl="v1/stages"
 				defaultItems={product?.stages}
 				defaultItemIds={product?.stageIds}
+				getOptionLabel={(option) => localeString(option.name) || ''}
 				required={false}
 			/>
 		</div>

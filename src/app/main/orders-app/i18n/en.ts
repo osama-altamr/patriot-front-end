@@ -88,7 +88,10 @@ const locales = {
 	ADD_ITEM: 'Add Item',
 	NEW: 'New',
 	IN_PROGRESS: 'In Progress', // Use a consistent key
-	UNKNOWN_STATUS: 'Unknown', 
+	UNKNOWN_STATUS: 'New',
+	TOTAL: 'Total',
+	CANNOT_EDIT_COMPLETED_ORDER: 'Items cannot be edited once the order is completed.',
+	"CANNOT_ADD_ITEM_TO_COMPLETED_ORDER": "Cannot add new items to a completed order."
 };
 
 export default locales;

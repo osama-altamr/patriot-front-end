@@ -14,7 +14,6 @@ const OperationApi = api
 	})
 	.injectEndpoints({
 		endpoints: (build) => ({
-			// --- Existing Endpoints ---
 			getOperations: build.query<GetOperationsApiResponse, GetOperationsApiArg>({
 				query: (filters) => {
 					let url = `v1/orders/items?page=${filters.page}&pageSize=${filters.pageSize}`;
@@ -50,7 +49,7 @@ const OperationApi = api
 
 			getOperation: build.query<GetOperationApiResponse, GetOperationApiArg>({
 				query: (operationId) => ({
-					url: `v1/operations/${operationId}` // Note: This URL might need to change to v1/orders/items/:id
+					url: `v1/orders/items/${operationId}` // Note: This URL might need to change to v1/orders/items/:id
 				}),
 				providesTags: ['Operations', 'Operation']
 			}),
@@ -91,6 +90,14 @@ const OperationApi = api
 				}),
 				providesTags: ['MaterialGrid']
 			}),
+			createOrderItemAction: build.mutation<void, CreateOrderItemActionApiArg>({
+				query: ({ itemId, ...body }) => ({
+					url: `v1/orders/items/${itemId}/actions`,
+					method: 'POST',
+					data: body
+				}),
+				invalidatesTags: ['MaterialGrid', 'Operations']
+			}),
 			updateOrderItemStage: build.mutation<void, UpdateOrderItemStageApiArg>({
 				query: ({ itemId, ...body }) => ({
 					url: `v1/orders/items/${itemId}`,
@@ -98,6 +105,13 @@ const OperationApi = api
 					data: body
 				}),
 				invalidatesTags: ['MaterialGrid', 'Operations']
+			}),
+			deleteCuttingResults: build.mutation<void, void>({
+				query: () => ({
+					url: `v1/orders/cutting-results`,
+					method: 'DELETE'
+				}),
+				invalidatesTags: ['MaterialGrid']
 			})
 		}),
 		overrideExisting: false
@@ -110,8 +124,15 @@ export type CreateOperationApiArg = PartialDeep<IOperation>;
 
 export type UpdateOrderItemStageApiArg = {
 	itemId: string;
-	currentStageId: string;
-}
+	currentStageId?: string | null;
+	status?: string;
+	price?: number
+};
+
+export type CreateOrderItemActionApiArg = {
+	itemId: string;
+	isStart?: boolean;
+};
 
 export type GetOperationsApiResponse = /** status 200 OK */ {
 	results: IOperation[];
@@ -135,11 +156,11 @@ export type GetOperationApiArg = string;
 export type UpdateOperationApiResponse = unknown;
 export type UpdateOperationApiArg = IOperation;
 
-// New Types for Glass Cutting
 export type RunGlassCuttingAlgorithmApiResponse = {
 	status: number;
 	message: string;
 };
+
 export type RunGlassCuttingAlgorithmApiArg = {
 	materialId?: string;
 	width?: number;
@@ -180,7 +201,9 @@ export const {
 	useUpdateOperationMutation,
 	useRunGlassCuttingAlgorithmMutation,
 	useGetMaterialGridQuery,
-  useUpdateOrderItemStageMutation,
+	useCreateOrderItemActionMutation,
+	useUpdateOrderItemStageMutation,
+	useDeleteCuttingResultsMutation
 } = OperationApi;
 
 export type OperationApiType = {

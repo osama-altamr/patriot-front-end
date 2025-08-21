@@ -11,7 +11,8 @@ const GLASS_CUTTING_STAGE_ID = '19aa52ec-9554-46b9-b38e-58ff4c2e9636';
 function Operations() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const user = useAppSelector(selectUser);
-	const isGlassCuttingUser = user.permissions?.stage?.id === GLASS_CUTTING_STAGE_ID;
+	const isGlassCuttingUser = true
+	// user.permissions?.stage?.id === GLASS_CUTTING_STAGE_ID;
 	return (
 		<FusePageCarded
 			header={<OperationsHeader />}

@@ -56,6 +56,52 @@ export interface IComplaintBreakdown {
 	type?: string | null; // for type breakdown
 }
 
+export interface ISaleSummary {
+	totalRevenue: number;
+	totalOrders: number;
+	averageOrderValue: number;
+	totalItemsSold: number;
+}
+
+export interface ISaleDailyTrend {
+	date: string;
+	totalRevenue: number;
+	orderCount: number;
+}
+
+export interface ISaleBreakdownByProduct {
+	id: string
+	productId: string;
+	productName: LocaleString;
+	quantitySold: number;
+	totalRevenue: number;
+}
+
+export interface ISaleBreakdownByCategory {
+	id: string
+	categoryId: string;
+	categoryName: LocaleString;
+	quantitySold: number;
+	totalRevenue: number;
+}
+
+export interface ISaleBreakdownByState {
+	id: string
+	stateId: string;
+	stateName: LocaleString;
+	totalRevenue: number;
+	orderCount: number;
+}
+
+export interface ISaleBreakdownByCity {
+	id: string
+	cityId: string;
+	cityName: LocaleString;
+	stateName: LocaleString;
+	totalRevenue: number;
+	orderCount: number;
+}
+
 // --- Main Report Interface ---
 export default interface IReport {
 	id: string;
@@ -79,4 +125,11 @@ export default interface IReport {
 	complaintSummary?: IComplaintSummary;
 	complaintBreakdownByStatus?: IComplaintBreakdown[];
 	complaintBreakdownByType?: IComplaintBreakdown[];
+
+	saleSummary?: ISaleSummary;
+    saleDailyTrend?: ISaleDailyTrend[];
+    saleBreakdownByProduct?: ISaleBreakdownByProduct[];
+    saleBreakdownByCategory?: ISaleBreakdownByCategory[];
+    salesBreakdownByState?: ISaleBreakdownByState[];
+    salesBreakdownByCity?: ISaleBreakdownByCity[];
 }

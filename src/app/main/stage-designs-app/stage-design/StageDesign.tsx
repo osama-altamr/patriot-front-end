@@ -14,46 +14,40 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslation } from 'react-i18next';
 import {
+	requiredStringValidation,
 	optionalStringValidation,
-	localeStringValidation,
-	requiredNumberValidation,
-	arrayValidation
+	localeStringValidation
 } from 'src/app/main/utils/validations';
-import ProductHeader from './ProductHeader';
-import { useGetProductQuery } from '../ProductsApi';
-import ProductModel, { productDefaultValues } from '../models/ProductModel';
-import IProduct from '../models/IProduct';
+import StageDesignHeader from './StageDesignHeader';
+import { useGetStageDesignQuery } from '../StageDesignsApi';
+import StageDesignModel, { stageDesignDefaultValues } from '../models/StageDesignModel';
+import IStageDesign from '../models/IStageDesign';
 import BasicInfoTab from './tabs/BasicInfoTab';
 
-function Product() {
+function StageDesign() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-	const { t } = useTranslation('productsApp');
+	const { t } = useTranslation('stageDesignsApp');
 	const schema = z.object({
-		name: localeStringValidation(),
-		description: localeStringValidation({ requiredLanguages: [] }),
+		title: localeStringValidation(),
 		imageUrl: optionalStringValidation(),
-		height: requiredNumberValidation({ positive: true, nonZero: true }),
-		width: requiredNumberValidation({ positive: true, nonZero: true }),
-		categoryId: optionalStringValidation(),
-		stageIds: arrayValidation({ optional: true }),
-		pricePerSquareMeter: requiredNumberValidation({ positive: true }).optional().nullable()
+		stageId: requiredStringValidation()
 	});
 	const routeParams = useParams();
-	const { productId } = routeParams;
+	const { stageDesignId } = routeParams;
 
 	const [tabValue, setTabValue] = useState(0);
 
 	const {
-		data: product,
+		data: stageDesign,
 		isLoading,
 		isError
-	} = useGetProductQuery(productId, {
-		skip: !productId || productId === 'new'
+	} = useGetStageDesignQuery(stageDesignId, {
+		skip: !stageDesignId || stageDesignId === 'new'
 	});
 
-	const methods = useForm<IProduct>({
+	const methods = useForm<IStageDesign>({
 		mode: 'onChange',
-		defaultValues: productDefaultValues,
+		defaultValues: stageDesignDefaultValues,
 		resolver: zodResolver(schema)
 	});
 
@@ -62,18 +56,18 @@ function Product() {
 	const form = watch();
 
 	useEffect(() => {
-		if (productId === 'new') {
-			reset(ProductModel({}));
+		if (stageDesignId === 'new') {
+			reset(StageDesignModel({}));
 		}
-	}, [productId, reset]);
+	}, [stageDesignId, reset]);
 
 	useEffect(() => {
-		if (product) {
-			reset({ ...product });
+		if (stageDesign) {
+			reset({ ...stageDesign });
 		}
-	}, [product, reset]);
+	}, [stageDesign, reset]);
 
-	if (isError && productId !== 'new') {
+	if (isError && stageDesignId !== 'new') {
 		return (
 			<motion.div
 				initial={{ opacity: 0 }}
@@ -84,16 +78,16 @@ function Product() {
 					color="text.secondary"
 					variant="h5"
 				>
-					{t(`NO_PRODUCT`)}
+					{t(`NO_STAGE_DESIGN`)}
 				</Typography>
 				<Button
 					className="mt-24"
 					component={Link}
 					variant="outlined"
-					to="/products"
+					to="/stage-designs"
 					color="inherit"
 				>
-					{t(`GO_TO_PRODUCTS`)}
+					{t(`GO_TO_STAGE_DESIGNS`)}
 				</Button>
 			</motion.div>
 		);
@@ -102,7 +96,7 @@ function Product() {
 	if (
 		isLoading ||
 		_.isEmpty(form) ||
-		(product && routeParams.productId !== product.id && routeParams.productId !== 'new')
+		(stageDesign && routeParams.stageDesignId !== stageDesign.id && routeParams.stageDesignId !== 'new')
 	) {
 		return <FuseLoading />;
 	}
@@ -114,7 +108,7 @@ function Product() {
 	return (
 		<FormProvider {...methods}>
 			<FusePageCarded
-				header={<ProductHeader />}
+				header={<StageDesignHeader />}
 				content={
 					<>
 						<Tabs
@@ -133,7 +127,7 @@ function Product() {
 						</Tabs>
 						<div className="p-16 sm:p-24 max-w-4xl">
 							<div className={tabValue !== 0 ? 'hidden' : ''}>
-								<BasicInfoTab product={product} />
+								<BasicInfoTab stageDesign={stageDesign} />
 							</div>
 						</div>
 					</>
@@ -144,4 +138,4 @@ function Product() {
 	);
 }
 
-export default Product;
+export default StageDesign;

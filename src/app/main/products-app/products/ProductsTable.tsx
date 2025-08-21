@@ -110,6 +110,12 @@ function ProductsTable() {
 			label: t('WIDTH')
 		},
 		{
+			id: 'pricePerSquareMeter',
+			type: TableDataTypes.normal,
+			label: t('PRICE_PER_SQUARE_METER'),
+			valueFormatter: (value) => value ? `$${Number(value).toFixed(2)}` : 'N/A' // Example formatting
+		},
+		{
 			id: 'categoryId',
 			type: TableDataTypes.normal,
 			label: t('CATEGORY'),

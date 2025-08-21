@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Box, TextField, MenuItem, Typography, alpha, Button, Chip } from '@mui/material';
+import { Box, TextField, MenuItem, Typography, alpha, Button, Chip, InputAdornment } from '@mui/material';
 import CustomAutoComplete from 'app/shared-components/custom-auto-complete/CustomAutoComplete';
 import { DatePicker } from '@mui/x-date-pickers';
 import { useState } from 'react';
@@ -43,9 +43,6 @@ function BasicInfoTab({ order, onAssignDriver }: BasicInfoTabProps) {
 	return (
 		<>
 			<div>
-				{/* ================================================================= */}
-				{/* Main Information Section                                        */}
-				{/* ================================================================= */}
 				<Box
 					component="div"
 					className="py-8 px-16 my-16 w-full rounded-lg"
@@ -62,6 +59,19 @@ function BasicInfoTab({ order, onAssignDriver }: BasicInfoTabProps) {
 							<TextField
 								{...field}
 								label={t('REF')}
+								variant="outlined"
+								fullWidth
+								disabled
+							/>
+						)}
+					/>
+					<Controller
+						name="total"
+						control={control}
+						render={({ field }) => (
+							<TextField
+								{...field}
+								label={t('TOTAL')}
 								variant="outlined"
 								fullWidth
 								disabled

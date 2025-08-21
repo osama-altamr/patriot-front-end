@@ -42,6 +42,7 @@ interface IAddress {
 
 export default interface IOrder {
 	id: string;
+	total: number
 	priority?: string;
 	note?: string;
 	ref?: string;

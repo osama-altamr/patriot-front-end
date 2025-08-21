@@ -71,7 +71,22 @@ const locales = {
 	RESOLVED_COMPLAINTS: 'Resolved Complaints',
 	COMPLAINT_BREAKDOWN_BY_STATUS: 'Complaint Breakdown by Status',
 	COMPLAINT_BREAKDOWN_BY_TYPE: 'Complaint Breakdown by Type',
-	DOWNLOAD_EXCEL: 'Download Excel'
+	DOWNLOAD_EXCEL: 'Download Excel',
+	SALES: 'Sales',
+	SALE_SUMMARY: 'Sales Summary',
+	AVERAGE_ORDER_VALUE: 'Average Order Value',
+	TOTAL_ITEMS_SOLD: 'Total Items Sold',
+	DAILY_SALES_TREND: 'Daily Sales Trend',
+	SALE_BREAKDOWN_BY_PRODUCT: 'Sales Breakdown by Product',
+	SALE_BREAKDOWN_BY_CATEGORY: 'Sales Breakdown by Category',
+	SALE_BREAKDOWN_BY_STATE: 'Sales Breakdown by State',
+	SALE_BREAKDOWN_BY_CITY: 'Sales Breakdown by City',
+	PRODUCT_NAME: 'Product Name',
+	CATEGORY_NAME: 'Category Name',
+	STATE_NAME: 'State Name',
+	CITY_NAME: 'City Name',
+	QUANTITY_SOLD: 'Quantity Sold',
+	ORDER_COUNT: 'Order Count'
 };
 
 export default locales;

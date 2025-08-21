@@ -9,6 +9,15 @@ const ProductModel = (data: PartialDeep<IProduct>) =>
 		width: 120
 	});
 export const productDefaultValues = ProductModel({});
-export const productEditableFields = ['name', 'description', 'imageUrl', 'height', 'width', 'categoryId', 'stageIds'];
+export const productEditableFields = [
+	'name',
+	'description',
+	'imageUrl',
+	'height',
+	'width',
+	'pricePerSquareMeter',
+	'categoryId',
+	'stageIds'
+];
 
 export default ProductModel;

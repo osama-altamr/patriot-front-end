@@ -18,8 +18,10 @@ import HomeAppConfig from '../main/home-app/HomeAppConfig';
 import ProductsAppConfig from '../main/products-app/ProductsAppConfig';
 import OrdersAppConfig from "../main/orders-app/OrdersAppConfig";
 import OperationsAppConfig from "../main/operations-app/OperationsAppConfig";
+import StageDesignsAppConfig from "../main/stage-designs-app/StageDesignsAppConfig";
 
 const routeConfigs: FuseRouteConfigsType = [
+StageDesignsAppConfig,
 	OperationsAppConfig,
 	OrdersAppConfig,
 	ProductsAppConfig,
