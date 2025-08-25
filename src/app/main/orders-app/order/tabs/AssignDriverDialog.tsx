@@ -35,9 +35,8 @@ function AssignDriverDialog({ open, onClose, onAssign }: AssignDriverDialogProps
 			onClose();
 		}
 	};
-	
 	const handleClose = () => {
-		setSelectedDriverId(''); // Reset selection when closing
+		setSelectedDriverId('');
 		onClose();
 	};
 
@@ -55,13 +54,16 @@ function AssignDriverDialog({ open, onClose, onAssign }: AssignDriverDialogProps
 						<FuseLoading />
 					</Box>
 				) : (
-					<FormControl fullWidth sx={{ mt: 2 }}>
+					<FormControl
+						fullWidth
+						sx={{ mt: 2 }}
+					>
 						<InputLabel id="driver-select-label">{t('SELECT_A_DRIVER')}</InputLabel>
 						<Select
 							labelId="driver-select-label"
 							value={selectedDriverId}
 							label={t('SELECT_A_DRIVER')}
-							onChange={(e) => setSelectedDriverId(e.target.value as string)}
+							onChange={(e) => setSelectedDriverId(e.target.value)}
 						>
 							{/* FIX: Map over `drivers.results` to match your API response structure */}
 							{drivers?.results?.map((driver: IUser) => (

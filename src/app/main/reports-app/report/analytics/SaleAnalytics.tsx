@@ -108,8 +108,6 @@ function SaleAnalytics({ form, t }: SaleAnalyticsProps) {
 		}));
 	}, [form.salesBreakdownByCity, currentLang]);
 
-	// --- 5. DEFINE TABLE FIELDS AS IF THE DATA WAS ALREADY SIMPLE ---
-	// The type is now 'normal' because we are passing a simple string.
 	const productTableFields: TableFieldProps<ISaleBreakdownByProduct>[] = [
 		{ id: 'productName', type: TableDataTypes.normal, label: t('PRODUCT_NAME') },
 		{ id: 'quantitySold', type: TableDataTypes.normal, label: t('QUANTITY_SOLD') },
@@ -138,7 +136,6 @@ function SaleAnalytics({ form, t }: SaleAnalyticsProps) {
 	const getSafeRowId = (row: any, idField?: string) => {
 		if (idField && row[idField]) return row[idField];
 		if (row.id) return row.id;
-		// Use a stable property from the row for the key
 		if (row.productName) return row.productName;
 		if (row.categoryName) return row.categoryName;
 		return Math.random().toString();
@@ -280,8 +277,6 @@ function SaleAnalytics({ form, t }: SaleAnalyticsProps) {
 					</CardContent>
 				</Card>
 			</Grid>
-
-			{/* --- 6. PASS THE FLATTENED DATA TO THE TABLES --- */}
 			<Grid
 				item
 				xs={12}

@@ -6,13 +6,12 @@ import OperationsTable from './OperationsTable';
 import OperationsHeader from './OperationsHeader';
 import GlassCuttingPage from './components/GlassCuttingPage';
 
-const GLASS_CUTTING_STAGE_ID = '19aa52ec-9554-46b9-b38e-58ff4c2e9636';
+const GLASS_CUTTING_STAGE_ID = 'e7501a7e-7317-4cf4-9b00-cf916f5cb4e2';
 
 function Operations() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const user = useAppSelector(selectUser);
-	const isGlassCuttingUser = true
-	// user.permissions?.stage?.id === GLASS_CUTTING_STAGE_ID;
+	const isGlassCuttingUser = user.permissions?.stage?.id === GLASS_CUTTING_STAGE_ID;
 	return (
 		<FusePageCarded
 			header={<OperationsHeader />}

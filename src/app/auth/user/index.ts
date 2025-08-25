@@ -30,7 +30,7 @@ interface Scope {
 }
 
 export type Permission = {
-	scope: Scope;
+	scope: Scope[]
 	accessType: UserAcessType;
 	stageId: string
 	stage: IStage

@@ -137,34 +137,24 @@ const navigationConfig: FuseNavItemType[] = [
 		end: true
 	},
 	{
-		id: 'location.group',
-		title: 'Location Management',
-		type: 'collapse',
+		id: 'state.all',
+		title: 'States',
+		type: 'item',
 		customIcon: true,
-		icon: 'fa6-FaSitemap',
-		translate: 'LOCATION_MANAGEMENT',
-		children: [
-			{
-				id: 'state.all',
-				title: 'States',
-				type: 'item',
-				customIcon: true,
-				url: '/states',
-				icon: 'fa6-FaCity',
-				translate: 'STATES',
-				end: true
-			},
-			{
-				id: 'city.all',
-				title: 'Cities',
-				type: 'item',
-				customIcon: true,
-				icon: 'fa6-FaCity',
-				url: '/cities',
-				translate: 'CITIES',
-				end: true
-			}
-		]
+		url: '/states',
+		icon: 'fa6-FaCity',
+		translate: 'STATES',
+		end: true
+	},
+	{
+		id: 'city.all',
+		title: 'Cities',
+		type: 'item',
+		customIcon: true,
+		icon: 'fa6-FaCity',
+		url: '/cities',
+		translate: 'CITIES',
+		end: true
 	}
 ];
 export default navigationConfig;

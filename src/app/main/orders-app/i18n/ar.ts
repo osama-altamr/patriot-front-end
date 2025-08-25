@@ -89,8 +89,8 @@ const locales = {
 	UNKNOWN_STATUS: 'جديد',
 	TOTAL: 'المجموع الكلي',
 	CANNOT_EDIT_COMPLETED_ORDER: 'لا يمكن تعديل العناصر بعد اكتمال الطلب.',
-	  "CANNOT_ADD_ITEM_TO_COMPLETED_ORDER": "لا يمكن إضافة عناصر جديدة إلى طلب مكتمل."
-	
+	CANNOT_ADD_ITEM_TO_COMPLETED_ORDER: 'لا يمكن إضافة عناصر جديدة إلى طلب مكتمل.',
+	WORKFLOW_STAGES: 'مراحل سير العمل'
 };
 
 export default locales;
