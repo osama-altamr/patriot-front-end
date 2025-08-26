@@ -17,12 +17,11 @@ import Icon from 'app/shared-components/Icon';
 import localeString from 'src/app/main/utils/localeString';
 import { useAppSelector } from 'app/store/hooks';
 import { selectUser } from 'src/app/auth/user/store/userSlice';
+import FuseUtils from '@fuse/utils';
+import { employeeScopes } from '../../employees-app/Utils';
 import IComplaint from '../models/IComplaint';
 import { useCreateComplaintMutation, useRemoveComplaintMutation, useUpdateComplaintMutation } from '../ComplaintsApi';
 
-/**
- * The complaint header.
- */
 function ComplaintHeader() {
 	const dispatch = useDispatch<AppDispatch>();
 	const user = useAppSelector(selectUser);
@@ -31,8 +30,6 @@ function ComplaintHeader() {
 	const { t } = useTranslation('complaintsApp');
 	const [loading, setLoading] = useState(false);
 	const [loadingRemove, setLoadingRemove] = useState(false);
-	const [loadingActivate, setLoadingActivate] = useState(false);
-	const [loadingDeactivate, setLoadingDeactivate] = useState(false);
 
 	const [updateComplaint] = useUpdateComplaintMutation();
 	const [createComplaint] = useCreateComplaintMutation();
@@ -43,7 +40,7 @@ function ComplaintHeader() {
 
 	const theme = useTheme();
 	const navigate = useNavigate();
-	const { id, name, active } = watch();
+	const { id, description } = watch();
 
 	function optimizeComplaint(data: IComplaint) {
 		const complaintData = { ...data };
@@ -173,13 +170,13 @@ function ComplaintHeader() {
 							variant="caption"
 							className="font-medium"
 						>
-							{name ? `${localeString(name) ?? ''}` : t(`COMPLAINT`)}
+							{description ? `${localeString(description) ?? ''}` : t(`COMPLAINT`)}
 						</Typography>
 					</motion.div>
 				</div>
 			</div>
 
-			{id && id !== 'new' && (
+			{id && id !== 'new' && FuseUtils.hasOperationPermission(employeeScopes.complaints, 'delete', user) && (
 				<motion.div
 					className="flex flex-1 w-full"
 					initial={{ opacity: 0, x: 20 }}
@@ -204,30 +201,34 @@ function ComplaintHeader() {
 					</LoadingButton>
 				</motion.div>
 			)}
-			<motion.div
-				className="flex flex-1 w-full"
-				initial={{ opacity: 0, x: 20 }}
-				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
-			>
-				<LoadingButton
-					className="whitespace-nowrap mx-4"
-					variant="contained"
-					color="secondary"
-					onClick={handleSaveComplaint}
-					startIcon={
-						<Icon
-							type="fa6"
-							name="FaFloppyDisk"
-							size="0.8em"
-						/>
-					}
-					loadingPosition="start"
-					loading={loading}
-					disabled={id && id !== 'new' && (_.isEmpty(dirtyFields) || !isValid)}
+
+			{((!id || id === 'new') && FuseUtils.hasOperationPermission(employeeScopes.complaints, 'create', user)) ||
+			(id && id !== 'new' && FuseUtils.hasOperationPermission(employeeScopes.complaints, 'update', user)) ? (
+				<motion.div
+					className="flex flex-1 w-full"
+					initial={{ opacity: 0, x: 20 }}
+					animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 				>
-					<span>{t(`${id && id !== 'new' ? 'SAVE' : 'CREATE'}_COMPLAINT`)}</span>
-				</LoadingButton>
-			</motion.div>
+					<LoadingButton
+						className="whitespace-nowrap mx-4"
+						variant="contained"
+						color="secondary"
+						onClick={handleSaveComplaint}
+						startIcon={
+							<Icon
+								type="fa6"
+								name="FaFloppyDisk"
+								size="0.8em"
+							/>
+						}
+						loadingPosition="start"
+						loading={loading}
+						disabled={id && id !== 'new' && (_.isEmpty(dirtyFields) || !isValid)}
+					>
+						<span>{t(`${id && id !== 'new' ? 'SAVE' : 'CREATE'}_COMPLAINT`)}</span>
+					</LoadingButton>
+				</motion.div>
+			) : null}
 		</div>
 	);
 }

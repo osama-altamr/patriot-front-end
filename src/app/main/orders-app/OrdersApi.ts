@@ -40,7 +40,7 @@ const OrderApi = api
 		endpoints: (build) => ({
 			getOrders: build.query<GetOrdersApiResponse, GetOrdersApiArg>({
 				query: (filters) => {
-					let url = `v1/orders?page=${filters.page}&pageSize=${filters.pageSize}`;
+					let url = `v1/orders?page=${filters.page}&limit=${filters.pageSize}`;
 
 					if (filters.searchText) {
 						url += `&search=${filters.searchText}`;

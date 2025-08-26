@@ -86,7 +86,13 @@ const locales = {
 	STATE_NAME: 'State Name',
 	CITY_NAME: 'City Name',
 	QUANTITY_SOLD: 'Quantity Sold',
-	ORDER_COUNT: 'Order Count'
+	ORDER_COUNT: 'Order Count',
+	BREAKDOWN_BY_PRODUCT: 'Breakdown by Product',
+	BREAKDOWN_BY_CATEGORY: 'Breakdown by Category',
+	BREAKDOWN_BY_STATE: 'Breakdown by State',
+	BREAKDOWN_BY_CITY: 'Breakdown by City',
+	AVG_ORDER_VALUE: 'Average Order Value',
+	ITEMS_SOLD: 'Items Sold'
 };
 
 export default locales;

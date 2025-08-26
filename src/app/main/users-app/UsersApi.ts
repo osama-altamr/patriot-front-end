@@ -42,8 +42,8 @@ const UserApi = api
 
 			getUsers: build.query<GetUsersApiResponse, GetUsersApiArg>({
 				query: (filters) => {
-					let url = `v1/users?page=${filters.page}&pageSize=${filters.pageSize}`;
-
+					let url = `v1/users?page=${filters.page}&limit=${filters.pageSize}`;
+					console.log(url)
 					if (filters.searchText) {
 						url += `&search=${filters.searchText}`;
 					}

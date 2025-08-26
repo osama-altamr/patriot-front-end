@@ -14,7 +14,7 @@ const CityApi = api
     endpoints: (build) => ({
       getCities: build.query<GetCitiesApiResponse, GetCitiesApiArg>({
         query: (filters) => {
-          var url = `v1/cities?page=${filters.page}&pageSize=${filters.pageSize}`;
+          var url = `v1/cities?page=${filters.page}&limit=${filters.pageSize}`;
           if (filters.searchText) {
             url += `&search=${filters.searchText}`;
           }

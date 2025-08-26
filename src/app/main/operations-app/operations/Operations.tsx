@@ -6,7 +6,7 @@ import OperationsTable from './OperationsTable';
 import OperationsHeader from './OperationsHeader';
 import GlassCuttingPage from './components/GlassCuttingPage';
 
-const GLASS_CUTTING_STAGE_ID = 'e7501a7e-7317-4cf4-9b00-cf916f5cb4e2';
+const GLASS_CUTTING_STAGE_ID = '51a02805-6fab-4280-a026-fc150d446a43';
 
 function Operations() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));

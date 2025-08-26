@@ -14,7 +14,7 @@ const CategoryApi = api
     endpoints: (build) => ({
       getCategories: build.query<GetCategoriesApiResponse, GetCategoriesApiArg>({
         query: (filters) => {
-          var url = `v1/categories?page=${filters.page}&pageSize=${filters.pageSize}`;
+          var url = `v1/categories?page=${filters.page}&limit=${filters.pageSize}`;
           if (filters.searchText) {
             url += `&search=${filters.searchText}`;
           }

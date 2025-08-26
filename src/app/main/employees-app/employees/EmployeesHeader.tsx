@@ -13,6 +13,7 @@ import { FilterTypes } from 'app/shared-components/filter-icon/Utils';
 import _ from 'lodash';
 import { useAppSelector } from 'app/store/hooks';
 import { selectUser } from 'src/app/auth/user/store/userSlice';
+import FuseUtils from '@fuse/utils';
 import {
 	selectEmployeesDateFromFilter,
 	selectEmployeesDateToFilter,
@@ -28,7 +29,7 @@ import {
 	selectEmployeesAccessTypeFilter,
 	setEmployeesAccessTypeFilter
 } from '../store/employeesSlice';
-import { employeeAccessType, toEmployeeAccessTypeTitle } from '../Utils';
+import { employeeAccessType, toEmployeeAccessTypeTitle, employeeScopes } from '../Utils';
 
 /**
  * The Employees header.
@@ -137,6 +138,9 @@ function EmployeesHeader() {
 						]}
 						changesCount={
 							[
+								!_.isEqual(userIdFilter, employeesInitialState.userIdFilter),
+								!_.isEqual(stageIdFilter, employeesInitialState.stageIdFilter),
+								!_.isEqual(accessTypeFilter, employeesInitialState.accessTypeFilter),
 								!_.isEqual(dateFromFilter, employeesInitialState.dateFromFilter),
 								!_.isEqual(dateToFilter, employeesInitialState.dateToFilter)
 							].filter(Boolean).length
@@ -172,21 +176,24 @@ function EmployeesHeader() {
 						/>
 					</Paper>
 				</motion.div>
-				<motion.div
-					className="flex flex-grow-0"
-					initial={{ opacity: 0, x: 20 }}
-					animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-				>
-					<Button
-						variant="contained"
-						color="secondary"
-						component={NavLinkAdapter}
-						to="/employees/new"
-						startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>}
+
+				{FuseUtils.hasOperationPermission(employeeScopes.permissions, 'create', user) && (
+					<motion.div
+						className="flex flex-grow-0"
+						initial={{ opacity: 0, x: 20 }}
+						animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 					>
-						{t(`ADD_EMPLOYEE`)}
-					</Button>
-				</motion.div>
+						<Button
+							variant="contained"
+							color="secondary"
+							component={NavLinkAdapter}
+							to="/employees/new"
+							startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>}
+						>
+							{t(`ADD_EMPLOYEE`)}
+						</Button>
+					</motion.div>
+				)}
 			</div>
 		</div>
 	);

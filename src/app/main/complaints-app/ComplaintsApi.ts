@@ -14,7 +14,7 @@ const ComplaintApi = api
 		endpoints: (build) => ({
 			getComplaints: build.query<GetComplaintsApiResponse, GetComplaintsApiArg>({
 				query: (filters) => {
-					let url = `v1/complaints?page=${filters.page}&pageSize=${filters.pageSize}`;
+					let url = `v1/complaints?page=${filters.page}&limit=${filters.pageSize}`;
 
 					if (filters.searchText) {
 						url += `&search=${filters.searchText}`;

@@ -14,7 +14,7 @@ const StageDesignApi = api
     endpoints: (build) => ({
       getStageDesigns: build.query<GetStageDesignsApiResponse, GetStageDesignsApiArg>({
         query: (filters) => {
-          var url = `v1/stage-patterns?page=${filters.page}&pageSize=${filters.pageSize}`;
+          var url = `v1/stage-patterns?page=${filters.page}&limit=${filters.pageSize}`;
           if (filters.searchText) {
             url += `&search=${filters.searchText}`;
           }

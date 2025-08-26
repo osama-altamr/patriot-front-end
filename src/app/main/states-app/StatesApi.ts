@@ -14,7 +14,7 @@ const StateApi = api
     endpoints: (build) => ({
       getStates: build.query<GetStatesApiResponse, GetStatesApiArg>({
         query: (filters) => {
-          var url = `v1/states?page=${filters.page}&pageSize=${filters.pageSize}`;
+          var url = `v1/states?page=${filters.page}&limit=${filters.pageSize}`;
           if (filters.searchText) {
             url += `&search=${filters.searchText}`;
           }

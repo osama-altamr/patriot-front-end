@@ -1,165 +1,159 @@
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { motion } from "framer-motion";
-import FuseSvgIcon from "@fuse/core/FuseSvgIcon";
-import NavLinkAdapter from "@fuse/core/NavLinkAdapter";
-import useThemeMediaQuery from "@fuse/hooks/useThemeMediaQuery";
-import { useTranslation } from "react-i18next";
-import { Input, Paper } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "app/store/store";
-import { useSelector } from "react-redux";
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
+import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
+import { useTranslation } from 'react-i18next';
+import { Input, Paper } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from 'app/store/store';
+import _ from 'lodash';
+import { useAppSelector } from 'app/store/hooks';
+import { selectUser } from 'src/app/auth/user/store/userSlice';
+import FilterIcon from 'app/shared-components/filter-icon/FilterIcon';
+import { FilterTypes } from 'app/shared-components/filter-icon/Utils';
+import FuseUtils from '@fuse/utils';
+import { employeeScopes } from '../../employees-app/Utils';
 import {
-  selectProductsDateFromFilter,
-  selectProductsDateToFilter,
-  selectProductsSearchText,
-  setProductsDateFromFilter,
-  setProductsDateToFilter,
-  setProductsSearchText,
-  productsInitialState,
-  
-  selectProductsCategoryIdFilter,
-  setProductsCategoryIdFilter,
-} from "../store/productsSlice";
-import FilterIcon from "app/shared-components/filter-icon/FilterIcon";
-import { FilterTypes } from "app/shared-components/filter-icon/Utils";
-import _ from "lodash";
-import localeString from "src/app/main/utils/localeString";
-import { useAppSelector } from "app/store/hooks";
-import { selectUser } from "src/app/auth/user/store/userSlice";
-
+	productsInitialState,
+	selectProductsCategoryIdFilter,
+	selectProductsDateFromFilter,
+	selectProductsDateToFilter,
+	selectProductsSearchText,
+	setProductsCategoryIdFilter,
+	setProductsDateFromFilter,
+	setProductsDateToFilter,
+	setProductsSearchText
+} from '../store/productsSlice';
 
 /**
  * The Products header.
  */
 
 function ProductsHeader() {
-  const { t } = useTranslation("productsApp");
-  const dispatch = useDispatch<AppDispatch>();
-  const user = useAppSelector(selectUser);
-  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
-  const searchText = useSelector(selectProductsSearchText);
-  
-  const categoryIdFilter = useSelector(selectProductsCategoryIdFilter);
-  const dateFromFilter = useSelector(selectProductsDateFromFilter);
-  const dateToFilter = useSelector(selectProductsDateToFilter);
-  
-  
-  function handleChangeCategoryIdFilter(event) {
-    dispatch(setProductsCategoryIdFilter(event));
-  }
-  function handleChangeDateFromFilter(event) {
-    dispatch(setProductsDateFromFilter(event));
-  }
-  function handleChangeDateToFilter(event) {
-    dispatch(setProductsDateToFilter(event));
-  }
-  return (
-    <div className="flex space-y-12 sm:space-y-0 flex-1 w-full items-center justify-between py-8 sm:py-16 px-16 md:px-24">
-      <motion.span
-        initial={{ x: -20 }}
-        animate={{ x: 0, transition: { delay: 0.2 } }}
-      >
-        <Typography className="text-24 md:text-32 font-extrabold tracking-tight">
-          {t("PRODUCTS")}
-        </Typography>
-      </motion.span>
+	const { t } = useTranslation('productsApp');
+	const dispatch = useDispatch<AppDispatch>();
+	const user = useAppSelector(selectUser);
+	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
+	const searchText = useSelector(selectProductsSearchText);
 
-      <div className="flex flex-1 items-center justify-end space-x-8">
-        <motion.div
-          className="flex items-center"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1, transition: { delay: 0.3 } }}
-        >
-          <FilterIcon
-            filters={[
-              
-              {
-    type: FilterTypes.autocomplete,
-title: t("CATEGORY"),
-value: categoryIdFilter,
-onChange: handleChangeCategoryIdFilter,
-getItemUrl: `v1/categorys`,
-getItemsUrl: `v1/categorys`,
-closeOnChange: false,
-  },
-              {
-                type: FilterTypes.dateTime,
-                title: t("START_DATE"),
-                value: dateFromFilter as any,
-                onChange: handleChangeDateFromFilter,
-                maxDate: dateToFilter as any,
-                closeOnChange: false,
-                disableTime: true,
-              },
-              {
-                type: FilterTypes.dateTime,
-                title: t("END_DATE"),
-                value: dateToFilter as any,
-                onChange: handleChangeDateToFilter,
-                minDate: dateFromFilter as any,
-                closeOnChange: false,
-                disableTime: true,
-              },
-            ]}
-            changesCount={
-              [
-                
-                !_.isEqual(dateFromFilter, productsInitialState.dateFromFilter),
-                !_.isEqual(dateToFilter, productsInitialState.dateToFilter),
-              ].filter(Boolean).length
-            }
-          />
-        </motion.div>
-        <motion.div
-          className="flex items-center"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1, transition: { delay: 0.3 } }}
-        >
-          <Paper
-            component={motion.div}
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-            className="flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0"
-            style={{ borderRadius: 8 }}
-          >
-            <FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
+	const categoryIdFilter = useSelector(selectProductsCategoryIdFilter);
+	const dateFromFilter = useSelector(selectProductsDateFromFilter);
+	const dateToFilter = useSelector(selectProductsDateToFilter);
 
-            <Input
-              placeholder={t("SEARCH_PRODUCTS")}
-              className="flex flex-1"
-              disableUnderline
-              fullWidth
-              value={searchText}
-              inputProps={{
-                "aria-label": "Search",
-              }}
-              onChange={(ev) => {
-                dispatch(setProductsSearchText(ev));
-              }}
-            />
-          </Paper>
-        </motion.div>
-        <motion.div
-            className="flex flex-grow-0"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-          >
-            <Button
-              variant="contained"
-              color="secondary"
-              component={NavLinkAdapter}
-              to={`/products/new`}
-              startIcon={
-                <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-              }
-            >
-              {t(`ADD_PRODUCT`)}
-            </Button>
-          </motion.div>
-      </div>
-    </div>
-  );
+	function handleChangeCategoryIdFilter(event) {
+		dispatch(setProductsCategoryIdFilter(event));
+	}
+	function handleChangeDateFromFilter(event) {
+		dispatch(setProductsDateFromFilter(event));
+	}
+	function handleChangeDateToFilter(event) {
+		dispatch(setProductsDateToFilter(event));
+	}
+	return (
+		<div className="flex space-y-12 sm:space-y-0 flex-1 w-full items-center justify-between py-8 sm:py-16 px-16 md:px-24">
+			<motion.span
+				initial={{ x: -20 }}
+				animate={{ x: 0, transition: { delay: 0.2 } }}
+			>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">{t('PRODUCTS')}</Typography>
+			</motion.span>
+
+			<div className="flex flex-1 items-center justify-end space-x-8">
+				<motion.div
+					className="flex items-center"
+					initial={{ scale: 0 }}
+					animate={{ scale: 1, transition: { delay: 0.3 } }}
+				>
+					<FilterIcon
+						filters={[
+							{
+								type: FilterTypes.autocomplete,
+								title: t('CATEGORY'),
+								value: categoryIdFilter,
+								onChange: handleChangeCategoryIdFilter,
+								getItemUrl: `v1/categorys`, // Note: This might be a typo, usually it's plural `categories`
+								getItemsUrl: `v1/categorys`, // Note: This might be a typo, usually it's plural `categories`
+								closeOnChange: false
+							},
+							{
+								type: FilterTypes.dateTime,
+								title: t('START_DATE'),
+								value: dateFromFilter as any,
+								onChange: handleChangeDateFromFilter,
+								maxDate: dateToFilter as any,
+								closeOnChange: false,
+								disableTime: true
+							},
+							{
+								type: FilterTypes.dateTime,
+								title: t('END_DATE'),
+								value: dateToFilter as any,
+								onChange: handleChangeDateToFilter,
+								minDate: dateFromFilter as any,
+								closeOnChange: false,
+								disableTime: true
+							}
+						]}
+						changesCount={
+							[
+								!_.isEqual(categoryIdFilter, productsInitialState.categoryIdFilter),
+								!_.isEqual(dateFromFilter, productsInitialState.dateFromFilter),
+								!_.isEqual(dateToFilter, productsInitialState.dateToFilter)
+							].filter(Boolean).length
+						}
+					/>
+				</motion.div>
+				<motion.div
+					className="flex items-center"
+					initial={{ scale: 0 }}
+					animate={{ scale: 1, transition: { delay: 0.3 } }}
+				>
+					<Paper
+						component={motion.div}
+						initial={{ y: -20, opacity: 0 }}
+						animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
+						className="flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0"
+						style={{ borderRadius: 8 }}
+					>
+						<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
+
+						<Input
+							placeholder={t('SEARCH_PRODUCTS')}
+							className="flex flex-1"
+							disableUnderline
+							fullWidth
+							value={searchText}
+							inputProps={{
+								'aria-label': 'Search'
+							}}
+							onChange={(ev) => {
+								dispatch(setProductsSearchText(ev));
+							}}
+						/>
+					</Paper>
+				</motion.div>
+				{FuseUtils.hasOperationPermission(employeeScopes.products, 'create', user) && (
+					<motion.div
+						className="flex flex-grow-0"
+						initial={{ opacity: 0, x: 20 }}
+						animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+					>
+						<Button
+							variant="contained"
+							color="secondary"
+							component={NavLinkAdapter}
+							to="/products/new"
+							startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>}
+						>
+							{t(`ADD_PRODUCT`)}
+						</Button>
+					</motion.div>
+				)}
+			</div>
+		</div>
+	);
 }
 
 export default ProductsHeader;

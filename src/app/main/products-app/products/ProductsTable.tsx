@@ -6,12 +6,14 @@ import { AppDispatch } from 'app/store/store';
 import { openDialog } from '@fuse/core/FuseDialog/fuseDialogSlice';
 import AlertDialog from 'app/shared-components/alert-dialog/AlertDialog';
 import { showMessage } from '@fuse/core/FuseMessage/fuseMessageSlice';
-import { TableDataTypes, TableFieldProps } from 'app/shared-components/custom-table/Utils';
+import { ActionProps, TableDataTypes, TableFieldProps } from 'app/shared-components/custom-table/Utils';
 import CustomTable from 'app/shared-components/custom-table/CustomTable';
 import { FetchStatus } from 'src/app/main/utils/dataStatus';
 import localeString from 'src/app/main/utils/localeString';
 import { useAppSelector } from 'app/store/hooks';
 import { selectUser } from 'src/app/auth/user/store/userSlice';
+import FuseUtils from '@fuse/utils';
+import { employeeScopes } from '../../employees-app/Utils';
 import IProduct from '../models/IProduct';
 import {
 	newProductsInstance,
@@ -25,7 +27,7 @@ import {
 	setProductsPageSize,
 	selectProductsCategoryIdFilter
 } from '../store/productsSlice';
-import { useGetProductsQuery, useRemoveProductMutation, useUpdateProductMutation } from '../ProductsApi';
+import { useGetProductsQuery, useRemoveProductMutation } from '../ProductsApi';
 
 function ProductsTable() {
 	const { t } = useTranslation('productsApp');
@@ -54,7 +56,6 @@ function ProductsTable() {
 			page,
 			pageSize,
 			searchText,
-
 			categoryIdFilter,
 			dateFromFilter,
 			dateToFilter
@@ -62,7 +63,6 @@ function ProductsTable() {
 		{ skip: !ready, refetchOnMountOrArgChange: true }
 	);
 	const [removeProduct] = useRemoveProductMutation();
-	const [updateProduct] = useUpdateProductMutation();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -80,6 +80,24 @@ function ProductsTable() {
 		dispatch(setProductsPage(page));
 		dispatch(setProductsPageSize(pageSize));
 	}
+
+	const tableActions: ActionProps<IProduct>[] = [];
+
+	if (FuseUtils.hasOperationPermission(employeeScopes.products, 'update', user)) {
+		tableActions.push({
+			title: t('REMOVE'),
+			color: 'error',
+			onActionClick: openRemoveProductDialog,
+			loadingGetter: (row) => row.id === loadingRemoveItem
+		});
+	}
+
+	tableActions.push({
+		title: t('VIEW'),
+		color: 'secondary',
+		link: true,
+		linkGetter: (row) => `/products/${row.id}`
+	});
 
 	const fields: TableFieldProps<IProduct>[] = [
 		{
@@ -113,7 +131,7 @@ function ProductsTable() {
 			id: 'pricePerSquareMeter',
 			type: TableDataTypes.normal,
 			label: t('PRICE_PER_SQUARE_METER'),
-			valueFormatter: (value) => value ? `$${Number(value).toFixed(2)}` : 'N/A' // Example formatting
+			valueFormatter: (value) => (value ? `$${Number(value).toFixed(2)}` : 'N/A') // Example formatting
 		},
 		{
 			id: 'categoryId',
@@ -121,7 +139,7 @@ function ProductsTable() {
 			label: t('CATEGORY'),
 			valueGetter: (row) => localeString(row.category?.name),
 			link: true,
-			linkGetter: (row) => `/category/${row.category?.id}`
+			linkGetter: (row) => `/categories/${row.category?.id}`
 		},
 		{
 			id: 'stageIds',
@@ -141,20 +159,7 @@ function ProductsTable() {
 			id: 'actions',
 			label: t('ACTIONS'),
 			type: TableDataTypes.actions,
-			actions: [
-				{
-					title: t('REMOVE'),
-					color: 'error',
-					onActionClick: openRemoveProductDialog,
-					loadingGetter: (row) => row.id === loadingRemoveItem
-				},
-				{
-					title: t('VIEW'),
-					color: 'secondary',
-					link: true,
-					linkGetter: (row) => `/products/${row.id}`
-				}
-			]
+			actions: tableActions
 		}
 	];
 

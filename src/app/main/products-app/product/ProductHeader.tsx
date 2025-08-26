@@ -17,6 +17,8 @@ import Icon from 'app/shared-components/Icon';
 import localeString from 'src/app/main/utils/localeString';
 import { useAppSelector } from 'app/store/hooks';
 import { selectUser } from 'src/app/auth/user/store/userSlice';
+import FuseUtils from '@fuse/utils';
+import { employeeScopes } from '../../employees-app/Utils';
 import IProduct from '../models/IProduct';
 import { useCreateProductMutation, useRemoveProductMutation, useUpdateProductMutation } from '../ProductsApi';
 
@@ -31,8 +33,6 @@ function ProductHeader() {
 	const { t } = useTranslation('productsApp');
 	const [loading, setLoading] = useState(false);
 	const [loadingRemove, setLoadingRemove] = useState(false);
-	const [loadingActivate, setLoadingActivate] = useState(false);
-	const [loadingDeactivate, setLoadingDeactivate] = useState(false);
 
 	const [updateProduct] = useUpdateProductMutation();
 	const [createProduct] = useCreateProductMutation();
@@ -179,7 +179,7 @@ function ProductHeader() {
 				</div>
 			</div>
 
-			{id && id !== 'new' && (
+			{id && id !== 'new' && FuseUtils.hasOperationPermission(employeeScopes.products, 'update', user) && (
 				<motion.div
 					className="flex flex-1 w-full"
 					initial={{ opacity: 0, x: 20 }}
@@ -190,13 +190,7 @@ function ProductHeader() {
 						variant="contained"
 						color="error"
 						onClick={handleRemoveProduct}
-						startIcon={
-							<Icon
-								type="fa6"
-								name="FaRegTrashCan"
-								size="0.8em"
-							/>
-						}
+						startIcon={<Icon type="fa6" name="FaRegTrashCan" size="0.8em" />}
 						loadingPosition="start"
 						loading={loadingRemove}
 					>
@@ -204,30 +198,26 @@ function ProductHeader() {
 					</LoadingButton>
 				</motion.div>
 			)}
-			<motion.div
-				className="flex flex-1 w-full"
-				initial={{ opacity: 0, x: 20 }}
-				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
-			>
-				<LoadingButton
-					className="whitespace-nowrap mx-4"
-					variant="contained"
-					color="secondary"
-					onClick={handleSaveProduct}
-					startIcon={
-						<Icon
-							type="fa6"
-							name="FaFloppyDisk"
-							size="0.8em"
-						/>
-					}
-					loadingPosition="start"
-					loading={loading}
-					disabled={id && id !== 'new' && (_.isEmpty(dirtyFields) || !isValid)}
+			{(!id || id === 'new' || FuseUtils.hasOperationPermission(employeeScopes.products, 'update', user)) && (
+				<motion.div
+					className="flex flex-1 w-full"
+					initial={{ opacity: 0, x: 20 }}
+					animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 				>
-					<span>{t(`${id && id !== 'new' ? 'SAVE' : 'CREATE'}_PRODUCT`)}</span>
-				</LoadingButton>
-			</motion.div>
+					<LoadingButton
+						className="whitespace-nowrap mx-4"
+						variant="contained"
+						color="secondary"
+						onClick={handleSaveProduct}
+						startIcon={<Icon type="fa6" name="FaFloppyDisk" size="0.8em" />}
+						loadingPosition="start"
+						loading={loading}
+						disabled={id && id !== 'new' && (_.isEmpty(dirtyFields) || !isValid)}
+					>
+						<span>{t(`${id && id !== 'new' ? 'SAVE' : 'CREATE'}_PRODUCT`)}</span>
+					</LoadingButton>
+				</motion.div>
+			)}
 		</div>
 	);
 }

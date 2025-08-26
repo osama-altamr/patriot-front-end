@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'app/store/store';
 import { openDialog } from '@fuse/core/FuseDialog/fuseDialogSlice';
 import AlertDialog from 'app/shared-components/alert-dialog/AlertDialog';
 import { showMessage } from '@fuse/core/FuseMessage/fuseMessageSlice';
-import { TableDataTypes, TableFieldProps } from 'app/shared-components/custom-table/Utils';
+import { ActionProps, TableDataTypes, TableFieldProps } from 'app/shared-components/custom-table/Utils';
 import CustomTable from 'app/shared-components/custom-table/CustomTable';
 import { FetchStatus } from 'src/app/main/utils/dataStatus';
 import { useAppSelector } from 'app/store/hooks';
 import { selectUser } from 'src/app/auth/user/store/userSlice';
+import FuseUtils from '@fuse/utils';
+import { employeeScopes } from '../../employees-app/Utils';
 import IReport from '../models/IReport';
+import { toReportTypeColor, toReportTypeTitle } from '../Utils';
+import { useGetReportsQuery, useRemoveReportMutation } from '../ReportsApi';
 import {
 	newReportsInstance,
 	resetReports,
@@ -20,12 +24,10 @@ import {
 	selectReportsPage,
 	selectReportsPageSize,
 	selectReportsSearchText,
+	selectReportsTypeFilter,
 	setReportsPage,
-	setReportsPageSize,
-	selectReportsTypeFilter
+	setReportsPageSize
 } from '../store/reportsSlice';
-import { useGetReportsQuery, useRemoveReportMutation, useUpdateReportMutation } from '../ReportsApi';
-import { toReportTypeTitle, toReportTypeColor } from '../Utils';
 
 function ReportsTable() {
 	const { t } = useTranslation('reportsApp');
@@ -62,7 +64,6 @@ function ReportsTable() {
 		{ skip: !ready, refetchOnMountOrArgChange: true }
 	);
 	const [removeReport] = useRemoveReportMutation();
-	const [updateReport] = useUpdateReportMutation();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -80,6 +81,24 @@ function ReportsTable() {
 		dispatch(setReportsPage(page));
 		dispatch(setReportsPageSize(pageSize));
 	}
+
+	const tableActions: ActionProps<IReport>[] = [];
+
+	if (FuseUtils.hasOperationPermission(employeeScopes.reports, 'update', user)) {
+		tableActions.push({
+			title: t('REMOVE'),
+			color: 'error',
+			onActionClick: openRemoveReportDialog,
+			loadingGetter: (row) => row.id === loadingRemoveItem
+		});
+	}
+
+	tableActions.push({
+		title: t('VIEW'),
+		color: 'secondary',
+		link: true,
+		linkGetter: (row) => `/reports/${row.id}`
+	});
 
 	const fields: TableFieldProps<IReport>[] = [
 		{
@@ -106,7 +125,6 @@ function ReportsTable() {
 			type: TableDataTypes.date,
 			label: t('END_DATE')
 		},
-
 		{
 			id: 'createdAt',
 			type: TableDataTypes.date,
@@ -118,20 +136,7 @@ function ReportsTable() {
 			id: 'actions',
 			label: t('ACTIONS'),
 			type: TableDataTypes.actions,
-			actions: [
-				{
-					title: t('REMOVE'),
-					color: 'error',
-					onActionClick: openRemoveReportDialog,
-					loadingGetter: (row) => row.id === loadingRemoveItem
-				},
-				{
-					title: t('VIEW'),
-					color: 'secondary',
-					link: true,
-					linkGetter: (row) => `/reports/${row.id}`
-				}
-			]
+			actions: tableActions
 		}
 	];
 

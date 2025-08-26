@@ -14,7 +14,7 @@ const EmployeeApi = api
 		endpoints: (build) => ({
 			getEmployees: build.query<GetEmployeesApiResponse, GetEmployeesApiArg>({
 				query: (filters) => {
-					let url = `v1/permissions?page=${filters.page}&pageSize=${filters.pageSize}`;
+					let url = `v1/permissions?page=${filters.page}&limit=${filters.pageSize}`;
 
 					if (filters.searchText) {
 						url += `&search=${filters.searchText}`;

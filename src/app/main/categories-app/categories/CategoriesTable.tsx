@@ -6,7 +6,7 @@ import { AppDispatch } from 'app/store/store';
 import { openDialog } from '@fuse/core/FuseDialog/fuseDialogSlice';
 import AlertDialog from 'app/shared-components/alert-dialog/AlertDialog';
 import { showMessage } from '@fuse/core/FuseMessage/fuseMessageSlice';
-import { TableDataTypes, TableFieldProps } from 'app/shared-components/custom-table/Utils';
+import { ActionProps, TableDataTypes, TableFieldProps } from 'app/shared-components/custom-table/Utils';
 import CustomTable from 'app/shared-components/custom-table/CustomTable';
 import { FetchStatus } from 'src/app/main/utils/dataStatus';
 import { useAppSelector } from 'app/store/hooks';
@@ -24,6 +24,8 @@ import {
 	setCategoriesPageSize
 } from '../store/categoriesSlice';
 import { useGetCategoriesQuery, useRemoveCategoryMutation, useUpdateCategoryMutation } from '../CategoriesApi';
+import FuseUtils from '@fuse/utils';
+import { employeeScopes } from '../../employees-app/Utils';
 
 function CategoriesTable() {
 	const { t } = useTranslation('categoriesApp');
@@ -77,6 +79,25 @@ function CategoriesTable() {
 		dispatch(setCategoriesPageSize(pageSize));
 	}
 
+	const tableActions: ActionProps<ICategory>[] = [];
+
+	if (FuseUtils.hasOperationPermission(employeeScopes.categories, 'create', user)) {
+		tableActions.push({
+			title: t('REMOVE'),
+			color: 'error',
+			onActionClick: openRemoveCategoryDialog,
+			loadingGetter: (row) => row.id === loadingRemoveItem
+		});
+	}
+
+	tableActions.push({
+		title: t('VIEW'),
+		color: 'secondary',
+		link: true,
+		linkGetter: (row) => `/categories/${row.id}`
+	});
+
+
 	const fields: TableFieldProps<ICategory>[] = [
 		{
 			id: 'name',
@@ -111,20 +132,7 @@ function CategoriesTable() {
 			id: 'actions',
 			label: t('ACTIONS'),
 			type: TableDataTypes.actions,
-			actions: [
-				{
-					title: t('REMOVE'),
-					color: 'error',
-					onActionClick: openRemoveCategoryDialog,
-					loadingGetter: (row) => row.id === loadingRemoveItem
-				},
-				{
-					title: t('VIEW'),
-					color: 'secondary',
-					link: true,
-					linkGetter: (row) => `/categories/${row.id}`
-				}
-			]
+			actions: tableActions,
 		}
 	];
 

@@ -28,6 +28,8 @@ import _ from "lodash";
 import localeString from "src/app/main/utils/localeString";
 import { useAppSelector } from "app/store/hooks";
 import { selectUser } from "src/app/auth/user/store/userSlice";
+import FuseUtils from "@fuse/utils";
+import { employeeScopes } from "../../employees-app/Utils";
 
 
 /**
@@ -154,23 +156,27 @@ closeOnChange: false,
             />
           </Paper>
         </motion.div>
-        <motion.div
-            className="flex flex-grow-0"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+        {
+          FuseUtils.hasOperationPermission(employeeScopes.cities, 'create', user) &&
+         (<motion.div
+          className="flex flex-grow-0"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
+        >
+          <Button
+            variant="contained"
+            color="secondary"
+            component={NavLinkAdapter}
+            to={`/cities/new`}
+            startIcon={
+              <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
+            }
           >
-            <Button
-              variant="contained"
-              color="secondary"
-              component={NavLinkAdapter}
-              to={`/cities/new`}
-              startIcon={
-                <FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>
-              }
-            >
-              {t(`ADD_CITY`)}
-            </Button>
-          </motion.div>
+            {t(`ADD_CITY`)}
+          </Button>
+        </motion.div>)  
+        }
+        
       </div>
     </div>
   );

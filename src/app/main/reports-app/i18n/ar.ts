@@ -86,7 +86,13 @@ const locales = {
 	STATE_NAME: 'اسم الولاية',
 	CITY_NAME: 'اسم المدينة',
 	QUANTITY_SOLD: 'الكمية المباعة',
-	ORDER_COUNT: 'عدد الطلبات'
+	ORDER_COUNT: 'عدد الطلبات',
+	BREAKDOWN_BY_PRODUCT: 'تصنيف حسب المنتج',
+	BREAKDOWN_BY_CATEGORY: 'تصنيف حسب الفئة',
+	BREAKDOWN_BY_STATE: 'تصنيف حسب الولاية',
+	BREAKDOWN_BY_CITY: 'تصنيف حسب المدينة',
+	AVG_ORDER_VALUE: 'متوسط قيمة الطلب',
+	ITEMS_SOLD: 'العناصر المباعة'
 };
 
 export default locales;

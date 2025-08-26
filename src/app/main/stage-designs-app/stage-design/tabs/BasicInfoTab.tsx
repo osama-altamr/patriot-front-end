@@ -41,7 +41,6 @@ function BasicInfoTab({ stageDesign }: { stageDesign?: IStageDesign }) {
 				getItemsUrl="v1/stages"
 				defaultItem={stageDesign?.stage}
 				defaultItemId={stageDesign?.stageId}
-				disabled
 			/>
 		</div>
 	);

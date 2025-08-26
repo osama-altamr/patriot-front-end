@@ -14,7 +14,7 @@ const ReportApi = api
     endpoints: (build) => ({
       getReports: build.query<GetReportsApiResponse, GetReportsApiArg>({
         query: (filters) => {
-          var url = `v1/reports?page=${filters.page}&pageSize=${filters.pageSize}`;
+          var url = `v1/reports?page=${filters.page}&limit=${filters.pageSize}`;
           if (filters.searchText) {
             url += `&search=${filters.searchText}`;
           }

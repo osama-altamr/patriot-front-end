@@ -14,11 +14,16 @@ import { useState } from 'react';
 import { showMessage } from '@fuse/core/FuseMessage/fuseMessageSlice';
 import { LoadingButton } from '@mui/lab';
 import Icon from 'app/shared-components/Icon';
+import { useAppSelector } from 'app/store/hooks';
+import { selectUser } from 'src/app/auth/user/store/userSlice';
+import FuseUtils from '@fuse/utils';
+import { employeeScopes } from '../../employees-app/Utils';
 import { useCreateOrderMutation, useRemoveOrderMutation, useUpdateOrderMutation } from '../OrdersApi';
 import IOrder from '../models/IOrder';
 
 function OrderHeader() {
 	const dispatch = useDispatch<AppDispatch>();
+	const user = useAppSelector(selectUser);
 	const { orderId } = useParams();
 	const { t } = useTranslation('ordersApp');
 	const [loading, setLoading] = useState(false);
@@ -130,43 +135,34 @@ function OrderHeader() {
 				initial={{ opacity: 0, x: 20 }}
 				animate={{ opacity: 1, x: 0, transition: { delay: 0.3 } }}
 			>
-				{id && id !== 'new' && (
+				{id && id !== 'new' && FuseUtils.hasOperationPermission(employeeScopes.orders, 'update', user) && (
 					<LoadingButton
 						className="whitespace-nowrap mx-4"
 						variant="contained"
 						color="error"
 						onClick={handleRemoveOrder}
-						startIcon={
-							<Icon
-								type="fa6"
-								name="FaRegTrashCan"
-								size="0.8em"
-							/>
-						}
+						startIcon={<Icon type="fa6" name="FaRegTrashCan" size="0.8em" />}
 						loadingPosition="start"
 						loading={loadingRemove}
 					>
 						{t('REMOVE_ORDER')}
 					</LoadingButton>
 				)}
-				<LoadingButton
-					className="whitespace-nowrap mx-4"
-					variant="contained"
-					color="secondary"
-					onClick={handleSubmit(handleSaveOrder)}
-					startIcon={
-						<Icon
-							type="fa6"
-							name="FaFloppyDisk"
-							size="0.8em"
-						/>
-					}
-					loadingPosition="start"
-					loading={loading}
-					disabled={_.isEmpty(dirtyFields) || !isValid}
-				>
-					{t(id && id !== 'new' ? 'SAVE' : 'CREATE')}
-				</LoadingButton>
+
+				{(!id || id === 'new' || FuseUtils.hasOperationPermission(employeeScopes.orders, 'update', user)) && (
+					<LoadingButton
+						className="whitespace-nowrap mx-4"
+						variant="contained"
+						color="secondary"
+						onClick={handleSubmit(handleSaveOrder)}
+						startIcon={<Icon type="fa6" name="FaFloppyDisk" size="0.8em" />}
+						loadingPosition="start"
+						loading={loading}
+						disabled={id && id !== 'new' && (_.isEmpty(dirtyFields) || !isValid)}
+					>
+						{t(id && id !== 'new' ? 'SAVE' : 'CREATE')}
+					</LoadingButton>
+				)}
 			</motion.div>
 		</div>
 	);

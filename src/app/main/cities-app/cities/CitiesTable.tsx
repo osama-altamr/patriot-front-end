@@ -6,7 +6,7 @@ import { AppDispatch } from 'app/store/store';
 import { openDialog } from '@fuse/core/FuseDialog/fuseDialogSlice';
 import AlertDialog from 'app/shared-components/alert-dialog/AlertDialog';
 import { showMessage } from '@fuse/core/FuseMessage/fuseMessageSlice';
-import { TableDataTypes, TableFieldProps } from 'app/shared-components/custom-table/Utils';
+import { ActionProps, TableDataTypes, TableFieldProps } from 'app/shared-components/custom-table/Utils';
 import CustomTable from 'app/shared-components/custom-table/CustomTable';
 import { FetchStatus } from 'src/app/main/utils/dataStatus';
 import localeString from 'src/app/main/utils/localeString';
@@ -27,6 +27,8 @@ import {
 	selectCitiesStateIdFilter
 } from '../store/citiesSlice';
 import { useGetCitiesQuery, useRemoveCityMutation, useUpdateCityMutation } from '../CitiesApi';
+import FuseUtils from '@fuse/utils';
+import { employeeScopes } from '../../employees-app/Utils';
 
 function CitiesTable() {
 	const { t } = useTranslation('citiesApp');
@@ -83,6 +85,38 @@ function CitiesTable() {
 		dispatch(setCitiesPageSize(pageSize));
 	}
 
+	const tableActions: ActionProps<ICity>[] = [];
+
+	if (FuseUtils.hasOperationPermission(employeeScopes.cities, 'create', user)) {
+		tableActions.push({
+			title: t('REMOVE'),
+			color: 'error',
+			onActionClick: openRemoveCityDialog,
+			loadingGetter: (row) => row.id === loadingRemoveItem
+		});
+		tableActions.push({
+			title: t('ACTIVATE'),
+			color: 'success',
+			onActionClick: activateCity,
+			loadingGetter: (row) => row.id === loadingActivateItem,
+			conditions: [{ id: 'active', equalsTo: false }]
+		});
+		tableActions.push({
+			title: t('DEACTIVATE'),
+			color: 'error',
+			onActionClick: deactivateCity,
+			loadingGetter: (row) => row.id === loadingDeactivateItem,
+			conditions: [{ id: 'active', equalsTo: true }]
+		});
+	}
+
+	tableActions.push({
+		title: t('VIEW'),
+		color: 'secondary',
+		link: true,
+		linkGetter: (row) => `/cities/${row.id}`
+	});
+
 	const fields: TableFieldProps<ICity>[] = [
 		{
 			id: 'stateId',
@@ -120,34 +154,7 @@ function CitiesTable() {
 			id: 'actions',
 			label: t('ACTIONS'),
 			type: TableDataTypes.actions,
-			actions: [
-				{
-					title: t('REMOVE'),
-					color: 'error',
-					onActionClick: openRemoveCityDialog,
-					loadingGetter: (row) => row.id === loadingRemoveItem
-				},
-				{
-					title: t('VIEW'),
-					color: 'secondary',
-					link: true,
-					linkGetter: (row) => `/cities/${row.id}`
-				},
-				{
-					title: t('ACTIVATE'),
-					color: 'success',
-					onActionClick: activateCity,
-					loadingGetter: (row) => row.id === loadingActivateItem,
-					conditions: [{ id: 'active', equalsTo: false }]
-				},
-				{
-					title: t('DEACTIVATE'),
-					color: 'error',
-					onActionClick: deactivateCity,
-					loadingGetter: (row) => row.id === loadingDeactivateItem,
-					conditions: [{ id: 'active', equalsTo: true }]
-				}
-			]
+			actions: tableActions
 		}
 	];
 

@@ -16,6 +16,8 @@ import { FilterTypes } from 'app/shared-components/filter-icon/Utils';
 import _ from 'lodash';
 import { useAppSelector } from 'app/store/hooks';
 import { selectUser } from 'src/app/auth/user/store/userSlice';
+import FuseUtils from '@fuse/utils';
+import { employeeScopes } from '../../employees-app/Utils';
 import {
 	selectComplaintsDateFromFilter,
 	selectComplaintsDateToFilter,
@@ -127,8 +129,8 @@ function ComplaintsHeader() {
 								title: t('USER'),
 								value: userIdFilter,
 								onChange: handleChangeUserIdFilter,
-                getItemUrl: `v1/users`,
-                getItemsUrl: `v1/users`,
+								getItemUrl: `v1/users`,
+								getItemsUrl: `v1/users`,
 								getOptionLabel: (option: any) => option.name || '',
 								closeOnChange: false
 							},
@@ -163,6 +165,10 @@ function ComplaintsHeader() {
 						]}
 						changesCount={
 							[
+								!_.isEqual(typeFilter, complaintsInitialState.typeFilter),
+								!_.isEqual(statusFilter, complaintsInitialState.statusFilter),
+								!_.isEqual(userIdFilter, complaintsInitialState.userIdFilter),
+								!_.isEqual(closedByIdFilter, complaintsInitialState.closedByIdFilter),
 								!_.isEqual(dateFromFilter, complaintsInitialState.dateFromFilter),
 								!_.isEqual(dateToFilter, complaintsInitialState.dateToFilter)
 							].filter(Boolean).length
@@ -198,21 +204,23 @@ function ComplaintsHeader() {
 						/>
 					</Paper>
 				</motion.div>
-				<motion.div
-					className="flex flex-grow-0"
-					initial={{ opacity: 0, x: 20 }}
-					animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-				>
-					<Button
-						variant="contained"
-						color="secondary"
-						component={NavLinkAdapter}
-						to="/complaints/new"
-						startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>}
+				{FuseUtils.hasOperationPermission(employeeScopes.complaints, 'create', user) && (
+					<motion.div
+						className="flex flex-grow-0"
+						initial={{ opacity: 0, x: 20 }}
+						animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 					>
-						{t(`ADD_COMPLAINT`)}
-					</Button>
-				</motion.div>
+						<Button
+							variant="contained"
+							color="secondary"
+							component={NavLinkAdapter}
+							to="/complaints/new"
+							startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>}
+						>
+							{t(`ADD_COMPLAINT`)}
+						</Button>
+					</motion.div>
+				)}
 			</div>
 		</div>
 	);

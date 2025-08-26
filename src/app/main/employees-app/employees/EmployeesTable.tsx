@@ -6,14 +6,20 @@ import { AppDispatch } from 'app/store/store';
 import { openDialog } from '@fuse/core/FuseDialog/fuseDialogSlice';
 import AlertDialog from 'app/shared-components/alert-dialog/AlertDialog';
 import { showMessage } from '@fuse/core/FuseMessage/fuseMessageSlice';
-import { TableDataTypes, TableFieldProps } from 'app/shared-components/custom-table/Utils';
+import { ActionProps, TableDataTypes, TableFieldProps } from 'app/shared-components/custom-table/Utils';
 import CustomTable from 'app/shared-components/custom-table/CustomTable';
 import { FetchStatus } from 'src/app/main/utils/dataStatus';
 import localeString from 'src/app/main/utils/localeString';
 import { useAppSelector } from 'app/store/hooks';
 import { selectUser } from 'src/app/auth/user/store/userSlice';
 import { Box, Chip } from '@mui/material';
-import { toEmployeeAccessTypeTitle, toEmployeeAccessTypeColor, toEmployeeScopesTitle } from '../Utils';
+import FuseUtils from '@fuse/utils';
+import {
+	toEmployeeAccessTypeTitle,
+	toEmployeeAccessTypeColor,
+	toEmployeeScopesTitle,
+	employeeScopes
+} from '../Utils';
 import IEmployee from '../models/IEmployee';
 import {
 	newEmployeesInstance,
@@ -88,6 +94,24 @@ function EmployeesTable() {
 		dispatch(setEmployeesPageSize(pageSize));
 	}
 
+	const tableActions: ActionProps<IEmployee>[] = [];
+
+	if (FuseUtils.hasOperationPermission(employeeScopes.permissions, 'delete', user)) {
+		tableActions.push({
+			title: t('REMOVE'),
+			color: 'error',
+			onActionClick: openRemoveEmployeeDialog,
+			loadingGetter: (row) => row.id === loadingRemoveItem
+		});
+	}
+
+	tableActions.push({
+		title: t('VIEW'),
+		color: 'secondary',
+		link: true,
+		linkGetter: (row) => `/employees/${row.id}`
+	});
+
 	const fields: TableFieldProps<IEmployee>[] = [
 		{
 			id: 'userId',
@@ -146,20 +170,7 @@ function EmployeesTable() {
 			id: 'actions',
 			label: t('ACTIONS'),
 			type: TableDataTypes.actions,
-			actions: [
-				{
-					title: t('REMOVE'),
-					color: 'error',
-					onActionClick: openRemoveEmployeeDialog,
-					loadingGetter: (row) => row.id === loadingRemoveItem
-				},
-				{
-					title: t('VIEW'),
-					color: 'secondary',
-					link: true,
-					linkGetter: (row) => `/employees/${row.id}`
-				}
-			]
+			actions: tableActions
 		}
 	];
 

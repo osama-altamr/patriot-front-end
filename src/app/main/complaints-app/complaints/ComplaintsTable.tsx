@@ -6,11 +6,13 @@ import { AppDispatch } from 'app/store/store';
 import { openDialog } from '@fuse/core/FuseDialog/fuseDialogSlice';
 import AlertDialog from 'app/shared-components/alert-dialog/AlertDialog';
 import { showMessage } from '@fuse/core/FuseMessage/fuseMessageSlice';
-import { TableDataTypes, TableFieldProps } from 'app/shared-components/custom-table/Utils';
+import { ActionProps, TableDataTypes, TableFieldProps } from 'app/shared-components/custom-table/Utils';
 import CustomTable from 'app/shared-components/custom-table/CustomTable';
 import { FetchStatus } from 'src/app/main/utils/dataStatus';
 import { useAppSelector } from 'app/store/hooks';
 import { selectUser } from 'src/app/auth/user/store/userSlice';
+import FuseUtils from '@fuse/utils';
+import { employeeScopes } from '../../employees-app/Utils';
 import IComplaint from '../models/IComplaint';
 import {
 	newComplaintsInstance,
@@ -90,6 +92,24 @@ function ComplaintsTable() {
 		dispatch(setComplaintsPageSize(pageSize));
 	}
 
+	const tableActions: ActionProps<IComplaint>[] = [];
+
+	if (FuseUtils.hasOperationPermission(employeeScopes.complaints, 'delete', user)) {
+		tableActions.push({
+			title: t('REMOVE'),
+			color: 'error',
+			onActionClick: openRemoveComplaintDialog,
+			loadingGetter: (row) => row.id === loadingRemoveItem
+		});
+	}
+
+	tableActions.push({
+		title: t('VIEW'),
+		color: 'secondary',
+		link: true,
+		linkGetter: (row) => `/complaints/${row.id}`
+	});
+
 	const fields: TableFieldProps<IComplaint>[] = [
 		{
 			id: 'description',
@@ -136,7 +156,7 @@ function ComplaintsTable() {
 			label: t('CLOSED_BY'),
 			valueGetter: (row) => row.closedBy?.name,
 			link: true,
-			linkGetter: (row) => `/closed-by/${row.closedBy?.id}`
+			linkGetter: (row) => `/user/${row.closedBy?.id}`
 		},
 
 		{
@@ -150,20 +170,7 @@ function ComplaintsTable() {
 			id: 'actions',
 			label: t('ACTIONS'),
 			type: TableDataTypes.actions,
-			actions: [
-				{
-					title: t('REMOVE'),
-					color: 'error',
-					onActionClick: openRemoveComplaintDialog,
-					loadingGetter: (row) => row.id === loadingRemoveItem
-				},
-				{
-					title: t('VIEW'),
-					color: 'secondary',
-					link: true,
-					linkGetter: (row) => `/complaints/${row.id}`
-				}
-			]
+			actions: tableActions
 		}
 	];
 

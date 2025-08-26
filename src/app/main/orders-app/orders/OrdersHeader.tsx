@@ -10,28 +10,35 @@ import { AppDispatch } from 'app/store/store';
 import FilterIcon from 'app/shared-components/filter-icon/FilterIcon';
 import { FilterTypes } from 'app/shared-components/filter-icon/Utils';
 import _ from 'lodash';
+import { useAppSelector } from 'app/store/hooks';
+import { selectUser } from 'src/app/auth/user/store/userSlice';
+import FuseUtils from '@fuse/utils';
+import { employeeScopes } from '../../employees-app/Utils';
 import {
+	ordersInitialState,
 	selectOrdersDateFromFilter,
 	selectOrdersDateToFilter,
+	selectOrdersDriverIdFilter,
+	selectOrdersPage,
+	selectOrdersPageSize,
+	selectOrdersPriorityFilter,
 	selectOrdersSearchText,
+	selectOrdersStatusFilter,
+	selectOrdersUserIdFilter,
 	setOrdersDateFromFilter,
 	setOrdersDateToFilter,
-	setOrdersSearchText,
-	ordersInitialState,
-	selectOrdersPriorityFilter,
+	setOrdersDriverIdFilter,
 	setOrdersPriorityFilter,
-	selectOrdersStatusFilter,
+	setOrdersSearchText,
 	setOrdersStatusFilter,
-	selectOrdersUserIdFilter,
-	setOrdersUserIdFilter,
-	selectOrdersDriverIdFilter,
-	setOrdersDriverIdFilter
+	setOrdersUserIdFilter
 } from '../store/ordersSlice';
 import { orderPriority, toOrderPriorityTitle, orderStatus, toOrderStatusTitle } from '../Utils';
 
 function OrdersHeader() {
 	const { t } = useTranslation('ordersApp');
 	const dispatch = useDispatch<AppDispatch>();
+	const user = useAppSelector(selectUser);
 
 	const searchText = useSelector(selectOrdersSearchText);
 	const priorityFilter = useSelector(selectOrdersPriorityFilter);
@@ -161,20 +168,22 @@ function OrdersHeader() {
 					</Paper>
 				</motion.div>
 
-				<motion.div
-					initial={{ opacity: 0, x: 20 }}
-					animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
-				>
-					<Button
-						variant="contained"
-						color="secondary"
-						component={NavLinkAdapter}
-						to="/orders/new"
-						startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>}
+				{FuseUtils.hasOperationPermission(employeeScopes.orders, 'create', user) && (
+					<motion.div
+						initial={{ opacity: 0, x: 20 }}
+						animate={{ opacity: 1, x: 0, transition: { delay: 0.2 } }}
 					>
-						{t('ADD_ORDER')}
-					</Button>
-				</motion.div>
+						<Button
+							variant="contained"
+							color="secondary"
+							component={NavLinkAdapter}
+							to="/orders/new"
+							startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>}
+						>
+							{t('ADD_ORDER')}
+						</Button>
+					</motion.div>
+				)}
 			</div>
 		</div>
 	);

@@ -14,7 +14,7 @@ const ProductApi = api
 		endpoints: (build) => ({
 			getProducts: build.query<GetProductsApiResponse, GetProductsApiArg>({
 				query: (filters) => {
-					let url = `v1/products?page=${filters.page}&pageSize=${filters.pageSize}`;
+					let url = `v1/products?page=${filters.page}&limit=${filters.pageSize}`;
 
 					if (filters.searchText) {
 						url += `&search=${filters.searchText}`;
