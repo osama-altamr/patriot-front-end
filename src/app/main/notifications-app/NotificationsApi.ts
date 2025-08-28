@@ -13,14 +13,14 @@ const NotificationApi = api
 		endpoints: (build) => ({
 			getNotifications: build.query<GetNotificationsApiResponse, GetNotificationsApiArg>({
 				query: (filters) => {
-					let url = `v1/notifications?page=${filters.page}&pageSize=${filters.pageSize}`;
+					let url = `v1/notifications?page=${filters.page}&limit=${filters.pageSize}`;
 
 					if (filters.searchText) {
 						url += `&search=${filters.searchText}`;
 					}
 
 					if (filters.isSeenFilter !== 'all') {
-						url = `v1/notifications/unread?page=${filters.page}&pageSize=${filters.pageSize}`;
+						url = `v1/notifications/unread?page=${filters.page}&limit=${filters.pageSize}`;
 					}
 
 					if (filters.dateFromFilter) {

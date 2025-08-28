@@ -190,7 +190,13 @@ function MaterialHeader() {
 						variant="contained"
 						color="error"
 						onClick={handleRemoveMaterial}
-						startIcon={<Icon type="fa6" name="FaRegTrashCan" size="0.8em" />}
+						startIcon={
+							<Icon
+								type="fa6"
+								name="FaRegTrashCan"
+								size="0.8em"
+							/>
+						}
 						loadingPosition="start"
 						loading={loadingRemove}
 					>
@@ -209,7 +215,13 @@ function MaterialHeader() {
 						variant="contained"
 						color="secondary"
 						onClick={handleSaveMaterial}
-						startIcon={<Icon type="fa6" name="FaFloppyDisk" size="0.8em" />}
+						startIcon={
+							<Icon
+								type="fa6"
+								name="FaFloppyDisk"
+								size="0.8em"
+							/>
+						}
 						loadingPosition="start"
 						loading={loading}
 						disabled={id && id !== 'new' && (_.isEmpty(dirtyFields) || !isValid)}

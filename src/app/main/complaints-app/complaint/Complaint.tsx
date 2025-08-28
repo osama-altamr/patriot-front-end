@@ -24,12 +24,12 @@ function Complaint() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const { t } = useTranslation('complaintsApp');
 	const schema = z.object({
-		description: requiredStringValidation(),
+		description: requiredStringValidation().optional(),
 		fileUrl: optionalStringValidation(),
 		location: optionalStringValidation(),
-		type: requiredStringValidation(),
+		type: requiredStringValidation().optional(),
 		status: optionalStringValidation(),
-		userId: requiredStringValidation(),
+		userId: requiredStringValidation().optional(),
 		closedById: optionalStringValidation()
 	});
 	const routeParams = useParams();

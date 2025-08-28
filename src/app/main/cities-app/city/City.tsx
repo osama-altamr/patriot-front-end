@@ -28,9 +28,9 @@ function City() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down("lg"));
   const { t } = useTranslation("citiesApp");
   const schema = z.object({
-    stateId: requiredStringValidation(),
-name: localeStringValidation(),
-    active: requiredBooleanValidation(),
+    stateId: requiredStringValidation().optional(),
+name: localeStringValidation().optional(),
+    active: requiredBooleanValidation().optional(),
   });
   const routeParams = useParams();
   const { cityId } = routeParams;

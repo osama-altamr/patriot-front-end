@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'app/store/store';
 import { openDialog } from '@fuse/core/FuseDialog/fuseDialogSlice';
 import AlertDialog from 'app/shared-components/alert-dialog/AlertDialog';
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // Import useEffect
 import { showMessage } from '@fuse/core/FuseMessage/fuseMessageSlice';
 import { LoadingButton } from '@mui/lab';
 import Icon from 'app/shared-components/Icon';
@@ -41,11 +41,26 @@ function EmployeeHeader() {
 	const [removeEmployee] = useRemoveEmployeeMutation();
 	const methods = useFormContext<IEmployee>();
 	const { formState, watch, handleSubmit, getValues } = methods;
-	const { isValid, dirtyFields } = formState;
+	const { isValid, dirtyFields, errors } = formState; // Also destructure errors for more detail
 
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const { id, name, active } = watch();
+
+	// --- START LOGGING ---
+	useEffect(() => {
+		console.group("EmployeeHeader Debugging Info");
+		console.log("Current Employee ID:", id);
+		console.log("Form State - isValid:", isValid);
+		console.log("Form State - dirtyFields:", dirtyFields);
+		console.log("Is dirtyFields empty?", _.isEmpty(dirtyFields));
+		console.log("Form State - errors:", errors);
+		const isSaveButtonDisabled = id && id !== 'new' && (_.isEmpty(dirtyFields) || !isValid);
+		console.log("Is SAVE button CURRENTLY disabled based on conditions?", isSaveButtonDisabled);
+		console.groupEnd();
+	}, [id, isValid, dirtyFields, errors]); // Dependencies ensure this runs when these values change
+	// --- END LOGGING ---
+
 
 	function optimizeEmployee(data: IEmployee) {
 		const employeeData = { ...data };
@@ -208,7 +223,7 @@ function EmployeeHeader() {
 			)}
 
 			{((!id || id === 'new') && FuseUtils.hasOperationPermission(employeeScopes.permissions, 'create', user)) ||
-			(id && id !== 'new' && FuseUtils.hasOperationPermission(employeeScopes.permissions, 'update', user)) ? (
+			(id && id !== 'new' && FuseUtils.hasOperationPermission(employeeScopes.permissions, 'create', user)) ? (
 				<motion.div
 					className="flex flex-1 w-full"
 					initial={{ opacity: 0, x: 20 }}

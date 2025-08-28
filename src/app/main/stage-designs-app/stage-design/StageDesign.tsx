@@ -28,9 +28,9 @@ function StageDesign() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const { t } = useTranslation('stageDesignsApp');
 	const schema = z.object({
-		title: localeStringValidation(),
+		title: localeStringValidation().optional(),
 		imageUrl: optionalStringValidation(),
-		stageId: requiredStringValidation()
+		stageId: requiredStringValidation().optional(),
 	});
 	const routeParams = useParams();
 	const { stageDesignId } = routeParams;

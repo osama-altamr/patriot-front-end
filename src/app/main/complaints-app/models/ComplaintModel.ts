@@ -1,20 +1,16 @@
-import _ from "@lodash";
-import { PartialDeep } from "type-fest";
-import IComplaint from "./IComplaint";
-
+import _ from '@lodash';
+import { PartialDeep } from 'type-fest';
+import IComplaint from './IComplaint';
 
 const ComplaintModel = (data: PartialDeep<IComplaint>) =>
-  _.defaults(data || {}, {
-    description: "",
+	_.defaults(data || {}, {
+		description: '',
 
+		type: '',
 
-type: "",
-
-userId: "",
-
-    
-  });
+		userId: ''
+	});
 export const complaintDefaultValues = ComplaintModel({});
-export const complaintEditableFields = ["description", "fileUrl", "location", "type", "status", "userId", "closedById", ];
+export const complaintEditableFields = ['description', 'fileUrl', 'location', 'type', 'status', 'userId', 'closedById'];
 
 export default ComplaintModel;

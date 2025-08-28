@@ -14,8 +14,7 @@ function BasicInfoTab({ complaint }: { complaint?: IComplaint }) {
 	const methods = useFormContext<IComplaint>();
 	const { control, formState, watch, getFieldState, getValues } = methods;
 	const { errors } = formState;
-	const { id } = watch();
-	console.log(getValues());
+	const { id, status } = watch();
 	return (
 		<div>
 			<Box
@@ -96,6 +95,7 @@ function BasicInfoTab({ complaint }: { complaint?: IComplaint }) {
 			<Controller
 				name="status"
 				control={control}
+				defaultValue={complaintStatus.pending}
 				render={({ field }) => (
 					<TextField
 						{...field}
@@ -135,6 +135,7 @@ function BasicInfoTab({ complaint }: { complaint?: IComplaint }) {
 				placeholder={t('SELECT_SINGLE_CLOSED_BY')}
 				getItemUrl="v1/users"
 				getItemsUrl="v1/users"
+				disabled
 				getOptionLabel={(option: any) => option.name || ''}
 				defaultItem={complaint?.closedBy}
 				defaultItemId={complaint?.closedById}

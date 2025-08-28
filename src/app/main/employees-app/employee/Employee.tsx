@@ -27,12 +27,12 @@ function Employee() {
 		feature: z.string(),
 		write: z.boolean(),
 		read: z.boolean()
-	})
+	}),
 	const schema = z.object({
-		userId: requiredStringValidation(),
+		userId: requiredStringValidation().optional(),
 		stageId: optionalStringValidation(),
-		accessType: requiredStringValidation(),
-		scopes: arrayValidation({ itemSchema: scopeObject, minLength: 1 })
+		accessType: requiredStringValidation().optional(),
+		scopes: arrayValidation({ itemSchema: scopeObject, minLength: 1 }).optional(),
 	});
 	const routeParams = useParams();
 	const { employeeId } = routeParams;

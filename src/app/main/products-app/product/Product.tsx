@@ -29,14 +29,30 @@ function Product() {
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const { t } = useTranslation('productsApp');
 	const schema = z.object({
-		name: localeStringValidation(),
-		description: localeStringValidation({ requiredLanguages: [] }),
-		imageUrl: optionalStringValidation(),
-		height: requiredNumberValidation({ positive: true, nonZero: true }),
-		width: requiredNumberValidation({ positive: true, nonZero: true }),
+		name: localeStringValidation().optional(),
+		description: localeStringValidation().optional(),
+		imageUrl: optionalStringValidation().optional(),
+		height: requiredNumberValidation()
+			.or(
+				optionalStringValidation()
+					.transform((val) => Number(val))
+					.optional()
+			)
+			.optional(),
+		width: requiredNumberValidation()
+			.or(
+				optionalStringValidation()
+					.transform((val) => Number(val))
+					.optional()
+			)
+			.optional(),
 		categoryId: optionalStringValidation(),
-		stageIds: arrayValidation({ optional: true }),
-		pricePerSquareMeter: requiredNumberValidation({ positive: true }).optional().nullable()
+		stageIds: arrayValidation({ optional: true }).optional(),
+		pricePerSquareMeter: requiredNumberValidation().or(
+			optionalStringValidation()
+				.transform((val) => Number(val))
+				.optional()
+		).optional().nullable()
 	});
 	const routeParams = useParams();
 	const { productId } = routeParams;

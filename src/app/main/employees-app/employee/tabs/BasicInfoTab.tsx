@@ -15,7 +15,6 @@ function BasicInfoTab({ employee }: { employee?: IEmployee }) {
 
 	return (
 		<div>
-			{/* Main Information Section */}
 			<Box
 				component="div"
 				className="py-8 px-16 my-16 w-full rounded-lg"

@@ -6,9 +6,14 @@ import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import { useTranslation } from 'react-i18next';
 import { Input, Paper } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'app/store/store';
-import { useSelector } from 'react-redux';
+import FilterIcon from 'app/shared-components/filter-icon/FilterIcon';
+import { FilterTypes } from 'app/shared-components/filter-icon/Utils';
+import _ from 'lodash';
+import { useAppSelector } from 'app/store/hooks';
+import { selectUser } from 'src/app/auth/user/store/userSlice';
+import FuseUtils from '@fuse/utils';
 import {
 	selectStageDesignsDateFromFilter,
 	selectStageDesignsDateToFilter,
@@ -18,12 +23,6 @@ import {
 	setStageDesignsSearchText,
 	stageDesignsInitialState
 } from '../store/stageDesignsSlice';
-import FilterIcon from 'app/shared-components/filter-icon/FilterIcon';
-import { FilterTypes } from 'app/shared-components/filter-icon/Utils';
-import _ from 'lodash';
-import { useAppSelector } from 'app/store/hooks';
-import { selectUser } from 'src/app/auth/user/store/userSlice';
-import FuseUtils from '@fuse/utils';
 import { employeeScopes } from '../../employees-app/Utils';
 
 /**
@@ -32,7 +31,7 @@ import { employeeScopes } from '../../employees-app/Utils';
 
 function StageDesignsHeader() {
 	const { t } = useTranslation('stageDesignsApp');
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = 	useDispatch<AppDispatch>();
 	const user = useAppSelector(selectUser);
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 	const searchText = useSelector(selectStageDesignsSearchText);
@@ -43,9 +42,11 @@ function StageDesignsHeader() {
 	function handleChangeDateFromFilter(event) {
 		dispatch(setStageDesignsDateFromFilter(event));
 	}
+
 	function handleChangeDateToFilter(event) {
 		dispatch(setStageDesignsDateToFilter(event));
 	}
+
 	return (
 		<div className="flex space-y-12 sm:space-y-0 flex-1 w-full items-center justify-between py-8 sm:py-16 px-16 md:px-24">
 			<motion.span
@@ -131,7 +132,7 @@ function StageDesignsHeader() {
 							variant="contained"
 							color="secondary"
 							component={NavLinkAdapter}
-							to={`/stage-designs/new`}
+							to="/stage-designs/new"
 							startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus</FuseSvgIcon>}
 						>
 							{t(`ADD_STAGE_DESIGN`)}
